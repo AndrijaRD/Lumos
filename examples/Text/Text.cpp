@@ -32,7 +32,7 @@ int main(){
         // states, but not somthing that changes every frame
 
         SDL_Rect dRect = {20, 20, -1, 48};
-        GUI::Text(
+        GUI::TextBox(
             "Hello World!",
             dRect,
             SDL_COLOR_WHITE

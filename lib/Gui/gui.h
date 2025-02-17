@@ -16,6 +16,12 @@
 #define GUI_ALIGN_TOP       4
 #define GUI_ALIGN_BOTTOM    5
 
+struct BorderRadiusRect {
+    uint top_left;
+    uint top_right;
+    uint bottom_left;
+    uint bottom_right;
+};
 
 
 string color2hex(const SDL_Color& color);
@@ -77,16 +83,17 @@ private:
     static inline int pTextAlignX = -1; 
     static inline bool pAutoFocus = false;
     static inline bool pInputLock = false;
+    static inline BorderRadiusRect pBorderRadius = {0, 0, 0, 0};
 
 public:
     static int Button(
         const string& title, 
         const SDL_Rect& dRect,
-        const SDL_Color& textColor = SDL_COLOR_WHITE,
-        const SDL_Color& buttonColor = SDL_COLOR_M_GUN
+        const SDL_Color& buttonColor = SDL_COLOR_M_GUN,
+        const SDL_Color& textColor = SDL_COLOR_WHITE
     );
 
-    static void Text(
+    static void TextBox(
         const string& title, 
         SDL_Rect& dRect, 
         const SDL_Color& color = SDL_COLOR_WHITE
@@ -107,10 +114,18 @@ public:
         const int thickness = -1
     );
 
+    static void Circle(
+        const SDL_Point& center, 
+        const int& radius, 
+        const SDL_Color& color = SDL_COLOR_WHITE, 
+        const int& thickness = -1
+    );
+
     static void Line(
         const SDL_Point& p1,
         const SDL_Point& p2,
-        const SDL_Color& color
+        const SDL_Color& color,
+        const uint& thickness = 1
     );
 
     static string Input(
@@ -123,11 +138,19 @@ public:
 
     static void DestroyInput(const string& uniqueId);
 
-    static void pushFontSize(const int& fontSize);
+    static void pushFontSize(const uint& fontSize);
     static void pushTextAlignY(const int& direction);
     static void pushTextAlignX(const int& direction);
     static void pushAutoFocus();
     static void pushInputLock();
+    static void pushBorderRadius(const uint& radius);
+    static void pushBorderRadius(const BorderRadiusRect& radiusRect);
+    static void pushBorderRadius(
+        const uint& topLeft,
+        const uint& topRight,
+        const uint& bottomLeft,
+        const uint& bottomRight
+    );
 };
 
 #endif

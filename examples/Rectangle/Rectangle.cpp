@@ -29,7 +29,9 @@ int main(){
         
 
         // We can also make a rect width custom color
+        // And with custom Border Radius
         dRect.x += 200; // (moving the x pos of the rect 200px to the right)
+        GUI::pushBorderRadius(20);
         GUI::Rect(dRect, SDL_COLOR_BLUE);
 
 
@@ -50,9 +52,8 @@ int main(){
             (Sys::getCurrentFrame() % 100)* 5, 
             100
         };
+        GUI::pushBorderRadius({20, 0, 20, 0});
         GUI::Rect(animatingRect, SDL_COLOR_GREEN);
-
-
 
         Sys::presentFrame();
     }

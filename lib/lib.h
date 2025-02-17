@@ -47,6 +47,14 @@ inline Uint32 toUint32(const SDL_Color& color) {
             static_cast<Uint32>(color.a);
 }
 
+inline std::ostream& operator<<(std::ostream& os, const SDL_Color& color){
+    os << "SDL_Color(" << static_cast<int>(color.r);
+    os << ", " << static_cast<int>(color.g);
+    os << ", " << static_cast<int>(color.b);
+    os << ", " << static_cast<int>(color.a) << ")";
+    return os;
+}
+
 
 // ERRORS ----------------------------------------------------------------------
 #define NO_ERROR                        0x00
@@ -58,6 +66,7 @@ inline Uint32 toUint32(const SDL_Color& color) {
 #define SYS_RENDERER_INIT_ERROR         0x05
 #define SYS_FPS_TOO_LOW                 0x06
 #define SYS_FPS_TOO_HIGH                0x07
+#define SYS_FONT_NOT_INITED             0x08
 //  SYS RESERVED                        0x1f
 
 #define TM_SURFACE_CREATE_ERROR         0x20
@@ -71,8 +80,9 @@ inline Uint32 toUint32(const SDL_Color& color) {
 #define TM_SRT_FAILED                   0x28        // SDL_SetRenderTarget      Failed
 #define TM_SRDC_FAILED                  0x29        // SDL_SetRenderDrawColor   Failed
 #define TM_RCLR_FAILED                  0x2a        // SDL_RenderClear          Failed
-#define TM_FILL_RECT_ERROR              0x2b        // SDL_RenderFillRect       Failed
-#define TM_INVALID_LINE_LENGTH          0x2c
+#define TM_STSM_FAILED                  0x2b        // SDL_SetTextureScaleMode  Failed
+#define TM_FILL_RECT_ERROR              0x2c        // SDL_RenderFillRect       Failed
+#define TM_INVALID_LINE_LENGTH          0x2d
 //  TM RESERVED                         0x3f
 
 #define DB_CONNECTION_ERROR             0x40
@@ -167,6 +177,16 @@ inline string time2string(const timeT& time){
         << std::setw(2) << std::setfill('0') << time.minute << ":"
         << std::setw(2) << std::setfill('0') << time.second;
     return oss.str();
+}
+
+
+// SDL_RECT -------------------------------------------------------------------
+inline ostream& operator<<(ostream& os, const SDL_Rect& dRect){
+    os << "Rect(" << dRect.x;
+    os << ", " << dRect.y;
+    os << ", " << dRect.w;
+    os << ", " << dRect.h << ")";
+    return os;
 }
 
 

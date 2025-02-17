@@ -11,6 +11,7 @@ unordered_map<int, string> Sys::errorMap = {
     {SYS_RENDERER_INIT_ERROR,           "SYS_RENDERER_INIT_ERROR"},
     {SYS_FPS_TOO_LOW,                   "SYS_FPS_TOO_LOW"},
     {SYS_FPS_TOO_HIGH,                  "SYS_FPS_TOO_HIGH"},
+    {SYS_FONT_NOT_INITED,               "SYS_FONT_NOT_INITED"},
 
     {TM_SURFACE_CREATE_ERROR,           "TM_SURFACE_CREATE_ERROR"},
     {TM_SURFACE_CONVERT_ERROR,          "TM_SURFACE_CONVERT_ERROR"},
@@ -23,6 +24,7 @@ unordered_map<int, string> Sys::errorMap = {
     {TM_SRT_FAILED,                     "TM_SRT_FAILED"},
     {TM_SRDC_FAILED,                    "TM_SRDC_FAILED"},
     {TM_RCLR_FAILED,                    "TM_RCLR_FAILED"},
+    {TM_STSM_FAILED,                    "TM_STSM_FAILED"},
     {TM_FILL_RECT_ERROR,                "TM_FILL_RECT_ERROR"},
     {TM_INVALID_LINE_LENGTH,            "TM_INVALID_LINE_LENGTH"},
     
@@ -96,7 +98,9 @@ int Sys::initWindow(
         cout << "[FATAL] Failed to create rederer!" << endl;
         return SYS_RENDERER_INIT_ERROR;
     }
+    
     SDL_SetRenderDrawBlendMode(r, SDL_BLENDMODE_BLEND);
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
     return NO_ERROR;
 }

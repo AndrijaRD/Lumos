@@ -37,7 +37,7 @@ class Sys{
     static inline SDL_Window* win = nullptr;
     static inline SDL_Renderer* r = nullptr;
 
-    static inline TTF_Font* font;
+    static inline TTF_Font* font = nullptr;
 
     static inline int wWidth = 0;
     static inline int wHeight = 0;

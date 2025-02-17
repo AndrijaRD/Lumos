@@ -30,9 +30,10 @@ struct TextureData{
         const TextureData& td
     );
 
-    int drawOverlayFRect(
+    int drawOverlayRect(
         const SDL_Rect& rect,
-        const SDL_Color& color
+        const SDL_Color& color,
+        const int& thickness = -1
     );
 
     int drawOverlayLine(

@@ -45,6 +45,13 @@ int TM::loadTexture(
         return TM_TEXTURE_CREATE_ERROR;
     }
 
+    int err = SDL_SetTextureScaleMode(td.tex, SDL_ScaleModeLinear);
+    if(err){
+        SDL_FreeSurface(surface);
+        SDL_DestroyTexture(td.tex);
+        return TM_STSM_FAILED;
+    }
+
 
     // FILL THE TEXTURE WITH THE IMAGE DATA -----------------------------------------------
     int s = SDL_UpdateTexture(td.tex, NULL, surface->pixels, surface->pitch);
@@ -192,6 +199,11 @@ int TM::createTextTexture(
     const string& text,
     const SDL_Color& color
 ){
+    if(Sys::font == nullptr) {
+        CHECK_ERROR(SYS_FONT_NOT_INITED);
+        exit(EXIT_FAILURE);
+    }
+
     // Ensure that privous Texture is de-loaded -----------------------------------------
     if(td.tex != nullptr) TM::freeTexture(td);
 
@@ -404,7 +416,7 @@ int TextureData::drawOverlayTexture(const TextureData& td){
  * @param color SDL_Color representing what color should rect be
  * @return 0 on success and positive on error coresponding to the ERROR DEFINITIONS
  */
-int TextureData::drawOverlayFRect(const SDL_Rect& rect, const SDL_Color& color){
+int TextureData::drawOverlayRect(const SDL_Rect& rect, const SDL_Color& color, const int& thickness){
     int err;
 
     // CHECK IF DIMENSIONS ARE VALID ------------------------------------------------------
@@ -414,13 +426,15 @@ int TextureData::drawOverlayFRect(const SDL_Rect& rect, const SDL_Color& color){
     err = SDL_SetRenderTarget(Sys::renderer, this->tex);
     if(err != 0) return TM_SRT_FAILED;
 
-    // Set the color for use by renderer
-    err = SDL_SetRenderDrawColor(Sys::renderer, color);
-    if(err != 0) return TM_SRDC_FAILED;
+    GUI::Rect(rect, color, thickness);
 
-    // Draw Filled Rect
-    err = SDL_RenderFillRect(Sys::renderer, &rect);
-    if(err != 0) return TM_FILL_RECT_ERROR;
+    // // Set the color for use by renderer
+    // err = SDL_SetRenderDrawColor(Sys::renderer, color);
+    // if(err != 0) return TM_SRDC_FAILED;
+
+    // // Draw Filled Rect
+    // err = SDL_RenderFillRect(Sys::renderer, &rect);
+    // if(err != 0) return TM_FILL_RECT_ERROR;
 
     // Reset the render target back to window
     err = SDL_SetRenderTarget(Sys::renderer, nullptr);
@@ -500,7 +514,7 @@ int TextureData::drawOverlayText(const string& text, SDL_Rect& dRect, const SDL_
     err = SDL_SetRenderTarget(Sys::renderer, this->tex);
     if(err != 0) return TM_SRT_FAILED;
 
-    GUI::Text(text, dRect, color);
+    GUI::TextBox(text, dRect, color);
 
     err = SDL_SetRenderTarget(Sys::renderer, nullptr);
     if(err != 0) return TM_SRT_FAILED;

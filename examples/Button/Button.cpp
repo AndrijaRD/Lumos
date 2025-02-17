@@ -24,8 +24,8 @@ int main(){
         GUI::Button(
             "I am also a Button",   // Button text
             {20, 20, 200, 40},      // Button pos and size
-            SDL_COLOR_GREEN,        // Text color
-            SDL_COLOR_RED           // Button color
+            SDL_COLOR_RED,           // Button color
+            SDL_COLOR_GREEN        // Text color
         );
         
 
