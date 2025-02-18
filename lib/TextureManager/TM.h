@@ -84,6 +84,7 @@ class TM{
     static int createTextTexture(
         TextureData& td, 
         const string& text,
+        const int& fontSize,
         const SDL_Color& color
     );
 

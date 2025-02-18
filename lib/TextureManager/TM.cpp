@@ -197,9 +197,10 @@ int TM::renderTexture(const TextureData& td, SDL_Rect& dr) {
 int TM::createTextTexture(
     TextureData& td, 
     const string& text,
+    const int& fontSize,
     const SDL_Color& color
 ){
-    if(Sys::font == nullptr) {
+    if(Sys::fontPath == "") {
         CHECK_ERROR(SYS_FONT_NOT_INITED);
         exit(EXIT_FAILURE);
     }
@@ -207,8 +208,11 @@ int TM::createTextTexture(
     // Ensure that privous Texture is de-loaded -----------------------------------------
     if(td.tex != nullptr) TM::freeTexture(td);
 
+    // Get the font with that particular fontSize
+    TTF_Font* font = Sys::getFont(fontSize);
+
     // Create the text texture and store it as surface ----------------------------------
-    SDL_Surface* surface = TTF_RenderUTF8_Blended(Sys::font, text.c_str(), color);
+    SDL_Surface* surface = TTF_RenderUTF8_Blended(font, text.c_str(), color);
     if(surface == nullptr) return TM_SURFACE_CREATE_ERROR;
 
     // Create texture from it and store it in TextureData

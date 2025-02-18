@@ -35,18 +35,21 @@ private:
         TextureData td;
         SDL_Color color;
         string title;
+        int fontSize;
 
         LoadedText(
             int frame = 0,
             TextureData td = TextureData(),
             SDL_Color color = SDL_COLOR_WHITE,
-            string title = ""
+            string title = "",
+            int fontSize = 0
         ):  frame(frame), 
             td(td),
             color(color),
-            title(title) {}
+            title(title),
+            fontSize(fontSize) {}
         
-        string getId(){ return title + color2hex(this->color); }
+        string getId(){ return getTextID(title, fontSize, color); }
 
         // Comparator: sort by value
         bool operator<(const LoadedText& other) const { return frame < other.frame; }
@@ -54,7 +57,8 @@ private:
     };
 
     static inline unordered_map<string, LoadedText> loadedTexts;
-    static LoadedText* loadNewText(const string& title, const SDL_Color& color);
+    static string getTextID(string title, int fontSize, SDL_Color color);
+    static LoadedText* loadNewText(const string& title, const int& fontSize, const SDL_Color& color);
     static void removeOldest();
 
 
@@ -103,6 +107,16 @@ public:
         const string& title, 
         SDL_Rect& dRect, 
         const SDL_Color& color = SDL_COLOR_WHITE
+    );
+
+    static int calcTextWidth(
+        const string& text,
+        const int& textHeight
+    );
+
+    static int calcTextHeight(
+        const string& text,
+        const int& textWidth
     );
 
     static void clearLoadedTexts();

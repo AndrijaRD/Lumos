@@ -37,7 +37,8 @@ class Sys{
     static inline SDL_Window* win = nullptr;
     static inline SDL_Renderer* r = nullptr;
 
-    static inline TTF_Font* font = nullptr;
+    static inline string fontPath = "";
+    static inline unordered_map<int, TTF_Font*> fontMap;
 
     static inline int wWidth = 0;
     static inline int wHeight = 0;
@@ -55,6 +56,7 @@ class Sys{
     );
 
     static int initFont(const string& fontPath);
+    static TTF_Font* getFont(const int& fontSize);
 
     static int handleEvents();
     static int presentFrame();

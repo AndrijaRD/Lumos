@@ -47,14 +47,6 @@ inline Uint32 toUint32(const SDL_Color& color) {
             static_cast<Uint32>(color.a);
 }
 
-inline std::ostream& operator<<(std::ostream& os, const SDL_Color& color){
-    os << "SDL_Color(" << static_cast<int>(color.r);
-    os << ", " << static_cast<int>(color.g);
-    os << ", " << static_cast<int>(color.b);
-    os << ", " << static_cast<int>(color.a) << ")";
-    return os;
-}
-
 
 // ERRORS ----------------------------------------------------------------------
 #define NO_ERROR                        0x00
@@ -98,11 +90,14 @@ inline std::ostream& operator<<(std::ostream& os, const SDL_Color& color){
 
 
 // DATE ------------------------------------------------------------------------
-typedef struct {
+struct dateT {
     uint year;
     uint month;
     uint day;
-} dateT;
+
+    dateT(): year(2024), month(12), day(24) {};
+    dateT(uint y, uint m, uint d): year(y), month(m), day(d) {};
+};
 
 /**
  * Handles << operator overload for dateT type.
@@ -139,11 +134,14 @@ inline string date2string(const dateT& date){
 }
 
 // TIME ------------------------------------------------------------------------
-typedef struct {
+struct timeT {
     uint hour;
     uint minute;
     uint second;
-} timeT;
+
+    timeT(): hour(0), minute(0), second(0) {};
+    timeT(uint h, uint m, uint s): hour(h), minute(m), second(s) {};
+};
 
 /**
  * Handles << operator overload for timeT type.
@@ -180,6 +178,22 @@ inline string time2string(const timeT& time){
 }
 
 
+
+// Size -----------------------------------------------------------------------
+struct Size {
+    int width;
+    int height;
+
+    Size(): width(0), height(0) {};
+    Size(int w, int h): width(w), height(h) {};
+};
+
+inline ostream& operator<<(ostream& os, const Size& size){
+    os << "Size(w: " << size.width << ", h: " << size.height << ")";
+    return os;
+}
+
+
 // SDL_RECT -------------------------------------------------------------------
 inline ostream& operator<<(ostream& os, const SDL_Rect& dRect){
     os << "Rect(" << dRect.x;
@@ -189,6 +203,15 @@ inline ostream& operator<<(ostream& os, const SDL_Rect& dRect){
     return os;
 }
 
+
+// SDL_COLOR ------------------------------------------------------------------
+inline std::ostream& operator<<(std::ostream& os, const SDL_Color& color){
+    os << "SDL_Color(" << static_cast<int>(color.r);
+    os << ", " << static_cast<int>(color.g);
+    os << ", " << static_cast<int>(color.b);
+    os << ", " << static_cast<int>(color.a) << ")";
+    return os;
+}
 
 
 // WRAPPERS -------------------------------------------------------------------

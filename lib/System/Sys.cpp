@@ -90,7 +90,8 @@ int Sys::initWindow(
 
 
     // CREATE RENDERER -----------------------------------------------------
-    r = SDL_CreateRenderer(win, -1, 0);
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+    r = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
     if(r){
         cout << "[INIT] Renderer created..." << endl;
     }
@@ -122,19 +123,27 @@ int Sys::initFont(const string& fontPath){
         return SYS_FONT_INIT_ERROR;
     }
 
-    // Create Font Object
-    font = TTF_OpenFont(fontPath.c_str(), 108);
-    if(font == nullptr){
-        cout << "[FATAL] Failed to load font!" << endl;
-        return SYS_FONT_PATH_ERROR;
-    }
-
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+    Sys::fontPath = fontPath;
 
     cout << "[INIT] Fonts Initialized..." << endl;
     return NO_ERROR;
 }
 
+
+TTF_Font* Sys::getFont(const int& fontSize){
+    TTF_Font* font = nullptr;
+    if(Sys::fontMap.count(fontSize)){
+        font = Sys::fontMap[fontSize];
+    } else {
+        font = TTF_OpenFont(Sys::fontPath.c_str(), fontSize);
+        if(font == nullptr){
+            cout << "[FATAL] Failed to load font!" << endl;
+            return nullptr;
+        }
+        Sys::fontMap.insert({fontSize, font});
+    }
+    return font;
+}
 
 
 

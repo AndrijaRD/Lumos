@@ -20,8 +20,11 @@
 void GUI::TextBox(const string& title, SDL_Rect& dRect, const SDL_Color& color){
     if(dRect.w < 1 && dRect.h < 1) return;
 
+    if(dRect.h == -1) dRect.h = calcTextHeight(title, dRect.w);
+    if(dRect.w == -1) dRect.w = calcTextWidth(title, dRect.h);
+
     LoadedText* textPointer = nullptr;
-    string id = title + color2hex(color);
+    string id = getTextID(title, dRect.h, color);
 
     auto it = loadedTexts.find(id);
     if (it != loadedTexts.end()) {
@@ -31,8 +34,7 @@ void GUI::TextBox(const string& title, SDL_Rect& dRect, const SDL_Color& color){
         // Update with the current frame
         textPointer->frame = Sys::getCurrentFrame();
     } else {
-        // Create new Text Texture
-        textPointer = loadNewText(title, color);
+        textPointer = loadNewText(title, dRect.h, color);
     }
 
     // Render the texture
@@ -61,9 +63,12 @@ void GUI::TextBox(const string& title, SDL_Rect& dRect, const SDL_Color& color){
 void GUI::TextDynamic(const string& title, SDL_Rect& dRect, const SDL_Color& color){
     if(dRect.w < 1 && dRect.h < 1) return;
 
+    if(dRect.h == -1) dRect.h = calcTextHeight(title, dRect.w);
+    if(dRect.w == -1) dRect.w = calcTextWidth(title, dRect.h);
+
     // Create the texture
     TextureData td;
-    int err = TM::createTextTexture(td, title, color);
+    int err = TM::createTextTexture(td, title, dRect.h, color);
     CHECK_ERROR(err);
 
     // Render the texture
@@ -74,11 +79,72 @@ void GUI::TextDynamic(const string& title, SDL_Rect& dRect, const SDL_Color& col
 }
 
 
+int GUI::calcTextWidth(
+    const string& text,
+    const int& textHeight
+){
+    // Ensure that the font is valid.
+    if (Sys::fontPath == "") {
+        CHECK_ERROR(SYS_FONT_NOT_INITED);
+        exit(EXIT_FAILURE);
+    }
+
+    TTF_Font* font = Sys::getFont(textHeight);
+
+    // Measure the text using the currently active font.
+    int width = 0, height = 0;
+    TTF_SizeText(font, text.c_str(), &width, &height);
+
+    int currentFontHeight = TTF_FontHeight(font);
+    float scale = static_cast<float>(textHeight) / currentFontHeight;
+    int textWidth = static_cast<int>(width * scale);
+
+    // Return the scaled width.
+    return textWidth;
+}
+
+
+int GUI::calcTextHeight(
+    const string& text,
+    const int& textWidth
+){
+    // Ensure that the font is valid.
+    if (Sys::fontPath == "") {
+        CHECK_ERROR(SYS_FONT_NOT_INITED);
+        exit(EXIT_FAILURE);
+    }
+
+    TTF_Font* font = Sys::getFont(64);
+
+    // Measure the text's dimensions at font size 64.
+    int measuredWidth = 0, measuredHeight = 0;
+    if (TTF_SizeText(font, text.c_str(), &measuredWidth, &measuredHeight) != 0) {
+        SDL_Log("TTF_SizeText error: %s", TTF_GetError());
+        return 0;
+    }
+    
+    // Calculate the scale factor based on the desired text width.
+    // For example, if measuredWidth is 200px and textWidth is 100px, the scale factor is 0.5.
+    float scaleFactor = static_cast<float>(textWidth) / measuredWidth;
+    
+    // The new height is the measured height scaled accordingly.
+    int requiredHeight = static_cast<int>(measuredHeight * scaleFactor);
+    return requiredHeight;
+}
+
+
+
 void GUI::clearLoadedTexts(){
     for(auto text : loadedTexts){
         TM::freeTexture(text.second.td);
     }
     loadedTexts.clear();
+}
+
+string GUI::getTextID(string title, int fontSize, SDL_Color color){
+    // id = "HelloWorld_24#ffffffff"
+    // id = text_fontSize#color
+    return title + "_" + to_string(fontSize) + color2hex(color);
 }
 
 
@@ -89,7 +155,11 @@ void GUI::clearLoadedTexts(){
  * Funtion for inserting a new text texture into map.
  * It also calles removeOldest if map is full.
  */
-GUI::LoadedText* GUI::loadNewText(const string& title, const SDL_Color& color){
+GUI::LoadedText* GUI::loadNewText(
+    const string& title, 
+    const int& fontSize, 
+    const SDL_Color& color
+){
     // If there is more loaded Textures then allowed, remove the oldest
     if((int)loadedTexts.size() >= max_num_of_loaded_textures){
         removeOldest();
@@ -98,11 +168,12 @@ GUI::LoadedText* GUI::loadNewText(const string& title, const SDL_Color& color){
     // Create the new LoadedText item
     LoadedText newText;
     newText.color = color;
+    newText.fontSize = fontSize;
     newText.frame = Sys::getCurrentFrame();
     newText.title = title;
 
     // Create the texture
-    int err = TM::createTextTexture(newText.td, newText.title, newText.color);
+    int err = TM::createTextTexture(newText.td, newText.title, fontSize, newText.color);
     CHECK_ERROR(err);
 
     // Insert the item and return the pointer to it

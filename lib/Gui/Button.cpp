@@ -46,22 +46,27 @@ int GUI::Button(
     // CHECK VALIDITY OF dRect -------------------------------------------
     if(dRect.w < 1 || dRect.h < 1) return GUI_CURSOR_OUTSIDE;
 
+    // FIND fontSize ---------------------------------------------------------------
+    if(fontSize == -1){
+        if(calcTextWidth(title, dRect.h) > dRect.w) fontSize = calcTextHeight(title, dRect.w);
+        else fontSize = dRect.h;
+    }
+
 
 
     // FIND BUTTON TEXTURE
     LoadedText* textPointer = nullptr;
-    string id = title + color2hex(textColor);
 
-    auto it = loadedTexts.find(id);
+    auto it = loadedTexts.find(getTextID(title, fontSize, textColor));
     if (it != loadedTexts.end()) {
-        // Save the pointer to that LOadedText item
+        // Save the pointer to that LoadedText item
         textPointer = &it->second;
         
         // Update with the current frame
         textPointer->frame = Sys::getCurrentFrame();
     } else {
         // Create new Text Texture
-        textPointer = loadNewText(title, textColor);
+        textPointer = loadNewText(title, fontSize, textColor);
     }
 
 
@@ -81,36 +86,11 @@ int GUI::Button(
     int padding = 5;
     if(dRect.w < 10 || dRect.h < 10) padding = 0;
 
-    // Calculate what is the max width and height of 
-    // the text that can fit in the button without overflow
-    int maxTextWidth = dRect.w - padding*2;
-    int maxTextHeight = dRect.h - padding*2;
-
-    // TEXT DRECT --------------------------------------------------------
+    // TEXT DRECT ------------------------------------------------------------------
     SDL_Rect text_dRect;
 
-    if(fontSize == -1){
-        // if required width is less then maximal allowed then
-        // the height is the limiting factor, so its max height
-
-        // We calc the text width in case of max height and compare it to max allowed width
-        int textWidth = textPointer->td.width * (float)maxTextHeight / textPointer->td.height;
-        if(textWidth <= maxTextWidth){
-            // This means that text is maximal height, 
-            // and width is less then max, there will be
-            // left-right free space
-            text_dRect.h = maxTextHeight;
-        } else {
-            // This means that text is maximal width, 
-            // and height is less then max, there will be
-            // top-bottom free space
-            textWidth = maxTextWidth;
-            text_dRect.h = textPointer->td.height * (float)maxTextWidth / textPointer->td.width;
-        }
-    } else{
-        text_dRect.h = fontSize;
-    }
-
+    // DRECT HEIGHT ----------------------------------------------------------------
+    text_dRect.h = fontSize;
 
     // DRECT WIDTH -----------------------------------------------------------------
     text_dRect.w = text_dRect.h * (float)textPointer->td.width / textPointer->td.height;

@@ -277,7 +277,7 @@ string GUI::Input(
             textToCompile.erase(0, state->removed);
         }
 
-        TM::createTextTexture(state->td, textToCompile, colorOfText);
+        TM::createTextTexture(state->td, textToCompile, textRect.h, colorOfText);
         state->change = false;
     }
 
