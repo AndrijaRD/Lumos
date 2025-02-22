@@ -11,12 +11,14 @@
         std::cout << "[ERROR] " << Sys::checkError((error)) << std::endl;
 
 
+bool isPointInRect(SDL_Point point, SDL_Rect rect);
 
 
 class Sys{
     friend class Mouse;
     friend class TM;
     friend class GUI;
+    friend class TextureData;
 
     private:
     static inline int OS;

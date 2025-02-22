@@ -274,7 +274,9 @@ int TM::copy(const TextureData& src, TextureData& dst){
     );
     if (dst.tex == nullptr) {
         return TM_TEXTURE_CREATE_ERROR;
-    }
+    }  
+
+    SDL_Texture* previousRenderTarget = SDL_GetRenderTarget(Sys::r);
     
     // Set the render target to the new texture to copy from the source texture
     err = SDL_SetRenderTarget(Sys::renderer, dst.tex);
@@ -289,7 +291,7 @@ int TM::copy(const TextureData& src, TextureData& dst){
     if(err) return TM_RCPY_FAILED;
 
     // Reset the render target to the default (the screen)
-    err = SDL_SetRenderTarget(Sys::renderer, nullptr);
+    err = SDL_SetRenderTarget(Sys::renderer, previousRenderTarget);
     if(err) return TM_SRT_FAILED;
 
     dst.width = src.width;
@@ -322,6 +324,8 @@ int TM::resize(TextureData& td, int targetWidth, int targetHeight){
     );
 
     if(!resizedTexture) return TM_TEXTURE_CREATE_ERROR;
+
+    SDL_Texture* previousRenderTarget = SDL_GetRenderTarget(Sys::r);
     
     int err = SDL_SetRenderTarget(Sys::renderer, resizedTexture);
     if(err != 0) return TM_SRT_FAILED;
@@ -332,7 +336,7 @@ int TM::resize(TextureData& td, int targetWidth, int targetHeight){
     if(err != 0) return TM_RCPY_FAILED;
 
 
-    err = SDL_SetRenderTarget(Sys::renderer, nullptr);
+    err = SDL_SetRenderTarget(Sys::renderer, previousRenderTarget);
     if(err != 0) return TM_SRT_FAILED;
 
     if(SDL_SetTextureBlendMode(resizedTexture, SDL_BLENDMODE_BLEND)){
@@ -373,6 +377,8 @@ int TextureData::drawOverlayTexture(const TextureData& td, SDL_Rect& dr){
     if(dr.w == -1) dr.w = dr.h * (float)td.width / td.height;
     if(dr.h == -1) dr.h = dr.w * (float)td.height / td.width;
 
+    SDL_Texture* previousRenderTarget = SDL_GetRenderTarget(Sys::r);
+
     // Set the render target to the new texture ----------------------------------------
     err = SDL_SetRenderTarget(Sys::renderer, this->tex);
     if(err != 0) return TM_SRT_FAILED;
@@ -382,7 +388,7 @@ int TextureData::drawOverlayTexture(const TextureData& td, SDL_Rect& dr){
     if(err != 0) return TM_RCPY_FAILED;
 
     // Reset the render target to the default (the screen) -----------------------------
-    err = SDL_SetRenderTarget(Sys::renderer, nullptr);
+    err = SDL_SetRenderTarget(Sys::renderer, previousRenderTarget);
     if(err != 0) return TM_SRT_FAILED;
 
     return NO_ERROR;
@@ -426,6 +432,8 @@ int TextureData::drawOverlayRect(const SDL_Rect& rect, const SDL_Color& color, c
     // CHECK IF DIMENSIONS ARE VALID ------------------------------------------------------
     if(rect.w < 0 && rect.h < 0) return TM_INVALID_DRECT;
 
+    SDL_Texture* previousRenderTarget = SDL_GetRenderTarget(Sys::r);
+
     // Set the texture as the target for drawing
     err = SDL_SetRenderTarget(Sys::renderer, this->tex);
     if(err != 0) return TM_SRT_FAILED;
@@ -441,7 +449,7 @@ int TextureData::drawOverlayRect(const SDL_Rect& rect, const SDL_Color& color, c
     // if(err != 0) return TM_FILL_RECT_ERROR;
 
     // Reset the render target back to window
-    err = SDL_SetRenderTarget(Sys::renderer, nullptr);
+    err = SDL_SetRenderTarget(Sys::renderer, previousRenderTarget);
     if(err != 0) return TM_SRT_FAILED;
 
     return NO_ERROR;
@@ -463,6 +471,8 @@ int TextureData::drawOverlayRect(const SDL_Rect& rect, const SDL_Color& color, c
  */
 int TextureData::drawOverlayLine(const SDL_Point& p1, const SDL_Point& p2, const SDL_Color& color, const int& thickness){
     int err;
+
+    SDL_Texture* previousRenderTarget = SDL_GetRenderTarget(Sys::r);
 
     // Set the texture as the target for drawing
     err = SDL_SetRenderTarget(Sys::renderer, this->tex);
@@ -502,7 +512,7 @@ int TextureData::drawOverlayLine(const SDL_Point& p1, const SDL_Point& p2, const
     SDL_RenderGeometry(Sys::renderer, nullptr, vertices, 4, nullptr, 0);
     
     // Reset the render target back to window
-    err = SDL_SetRenderTarget(Sys::renderer, nullptr);
+    err = SDL_SetRenderTarget(Sys::renderer, previousRenderTarget);
     if(err != 0) return TM_SRT_FAILED;
 
     return NO_ERROR;
@@ -515,12 +525,14 @@ int TextureData::drawOverlayLine(const SDL_Point& p1, const SDL_Point& p2, const
 int TextureData::drawOverlayText(const string& text, SDL_Rect& dRect, const SDL_Color& color){
     int err;
 
+    SDL_Texture* previousRenderTarget = SDL_GetRenderTarget(Sys::r);
+
     err = SDL_SetRenderTarget(Sys::renderer, this->tex);
     if(err != 0) return TM_SRT_FAILED;
 
     GUI::TextBox(text, dRect, color);
 
-    err = SDL_SetRenderTarget(Sys::renderer, nullptr);
+    err = SDL_SetRenderTarget(Sys::renderer, previousRenderTarget);
     if(err != 0) return TM_SRT_FAILED;
 
     return NO_ERROR;

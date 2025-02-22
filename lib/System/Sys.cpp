@@ -1,5 +1,5 @@
 #include "./Sys.h"
-
+#include "../Gui/gui.h"
 
 unordered_map<int, string> Sys::errorMap = {
     {NO_ERROR,                          "NO_ERROR"},
@@ -220,6 +220,30 @@ int Sys::handleEvents(){
         if(event.type == SDL_TEXTINPUT){
             Keyboard::text += event.text.text;
         }
+
+        if(event.type == SDL_MOUSEWHEEL){
+            for(auto& state : GUI::containerStates){
+                if(state.second.lastActiveFrame + 1 == getCurrentFrame()){
+                    if(Mouse::isHovering(state.second.dRect)){
+                        state.second.scrollOffset -= event.wheel.y * state.second.scrollSpeed;
+                        
+                        int maxScroll = state.second.contentHeight - state.second.dRect.h;
+                        if(maxScroll < 0) maxScroll = 0;  // if content is smaller than container, no scrolling
+                        state.second.scrollOffset = clamp(state.second.scrollOffset, 0, maxScroll);
+                    }
+                }
+                // How to see which of the states should be 
+                // updated, which ones are visible, active
+                //
+                // Then update them by looking if they
+                // are being hovered
+                //
+                // Maybe if container has been rendered last frame, 
+                // its active, So if lastActiveFrame+1, is equal to
+                // current frame, then consider it active
+                // and check for hovering and update scrollOffset
+            }
+        }
     }
 
     return error;
@@ -331,3 +355,19 @@ string Sys::Keyboard::getText() { return text; }
 bool Sys::Keyboard::isFocused() { return focused; }
 void Sys::Keyboard::focus() { pendingFocus = true; }
 void Sys::Keyboard::unfocus() { pendingUnFocus = true; }
+
+
+
+bool isPointInRect(SDL_Point point, SDL_Rect rect){
+    if (
+        point.x >= rect.x && 
+        point.x <= rect.x + rect.w &&
+        point.y >= rect.y && 
+        point.y <= rect.y + rect.h
+    ) return true;
+
+    return false;
+}
+
+
+

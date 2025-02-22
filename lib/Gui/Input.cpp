@@ -57,11 +57,39 @@ string GUI::Input(
     bool inputLock = GUI::pInputLock;
     GUI::pInputLock = false;
 
+    string defaultValue = GUI::pDefaultValue;
+    GUI::pDefaultValue = "";
 
+    BorderRadiusRect borderRadius = pBorderRadius;
+    pBorderRadius = {0, 0, 0, 0};
+
+    int outlineThickness = pOutlineThickness;
+    pOutlineThickness = -1;
+
+    // if outlineThickness is -1 then that means outline thickness
+    // was not set, not pushed, so Input should use default thickness
+    if(outlineThickness == -1) outlineThickness = 1;
+
+    SDL_Color outlineColor = pOutlineColor;
+    pOutlineColor = {0, 0, 0, 0};
+
+    // if color.a is 0, then that means that outline color was not pushed
+    // its default value, so default for input outline is black
+    if(outlineColor.a == 0) outlineColor = SDL_COLOR_BLACK;
+
+    paddingRect paddingRect = pPaddingRect;
+    pPaddingRect = {-1, -1, -1, -1};
+
+    // If paddingRect is filled with -1 then those values should be
+    // replaced by default values for input element
+    if(paddingRect.top == -1) paddingRect.top = 3;
+    if(paddingRect.right == -1) paddingRect.right = 5;
+    if(paddingRect.bottom == -1) paddingRect.bottom = 3;
+    if(paddingRect.left == -1) paddingRect.left = 5;
 
 
     // FIND STATE --------------------------------------------------------
-    // Get the pointer to the buttons state using uniqueId
+    // Get the pointer to the inputs state using uniqueId
     InputState* state = nullptr;
     auto it = inputStates.find(uniqueId);
     if(it != inputStates.end()){
@@ -79,22 +107,27 @@ string GUI::Input(
     }
 
 
-    if(autoFocus){
+    if(autoFocus && state->firstRender){
         Sys::Keyboard::focus();
         state->focused = true;
     }
 
+    if(state->firstRender && defaultValue != ""){
+        state->value = defaultValue;
+    }
+
 
     // DRAW BACKGROUND ---------------------------------------------------
+    GUI::pushBorderRadius(borderRadius);
     GUI::Rect(dRect, background);           // Background field
-    GUI::Rect(dRect, SDL_COLOR_BLACK, 1);   // 1px black Outline
+
+    if(outlineThickness != 0){
+        GUI::pushBorderRadius(borderRadius);
+        GUI::Rect(dRect, outlineColor, outlineThickness);   // 1px black Outline
+    }
+    
 
 
-
-    // DEFINE PADDING ----------------------------------------------------
-    // This is the paddings for the text relative to the field
-    int paddingX = 5;
-    int paddingY = 3;
 
 
 
@@ -104,7 +137,7 @@ string GUI::Input(
     // TEXT RECT HEIGHT --------------------------------------------------
     // If there is no fontSize speicified make the font max height
     if(fontSize == -1){
-        textRect.h = dRect.h - paddingY*2;
+        textRect.h = dRect.h - paddingRect.top - paddingRect.bottom;
     } else {
         textRect.h = fontSize;
     }
@@ -115,22 +148,23 @@ string GUI::Input(
     // TEXT RECT X POS ---------------------------------------------------
     // Depending on the placement, left, center, right. Default: left
     if(textAlignX == GUI_ALIGN_LEFT){
-        textRect.x = dRect.x + paddingX;
+        textRect.x = dRect.x + paddingRect.left;
     } else if(textAlignX == GUI_ALIGN_RIGHT){
-        textRect.x = dRect.x + dRect.w - paddingX - textRect.w;
+        textRect.x = dRect.x + dRect.w - paddingRect.right - textRect.w;
     } else if(textAlignX == GUI_ALIGN_CENTER){
         textRect.x = dRect.x + dRect.w/2 - textRect.w/2;
     }
 
     // TEXT RECT Y POS ---------------------------------------------------
     if(textAlignY == GUI_ALIGN_BOTTOM){
-        textRect.y = dRect.y + dRect.h - paddingY - textRect.h;
+        textRect.y = dRect.y + dRect.h - paddingRect.bottom - textRect.h;
     } else if(textAlignY == GUI_ALIGN_CENTER){
         textRect.y = dRect.y + dRect.h/2 - textRect.h/2;
     } else if(textAlignY == GUI_ALIGN_TOP){
-        textRect.y = dRect.y + paddingY;
+        textRect.y = dRect.y + paddingRect.top;
     }
     
+
 
     // Render the text
     TM::renderTexture(state->td, textRect);
@@ -145,7 +179,7 @@ string GUI::Input(
     // and we are also not talking about the placeholder THEN
     // make the removed variable larger by one, signaling to the
     // next frame that it should cut out one more frame from the left
-    if(textRect.w > (dRect.w - paddingX*2) && !placeholderActive){
+    if(textRect.w > (dRect.w - paddingRect.left - paddingRect.right) && !placeholderActive){
         state->removed++;
         state->change = true;
     }
@@ -161,7 +195,7 @@ string GUI::Input(
         if(blinkClock % 2){
             // Top point of the line, default the
             // x is equal to the starting position of the text
-            SDL_Point p1 = {0, dRect.y + paddingY};
+            SDL_Point p1 = {0, dRect.y + paddingRect.top};
             
             // If the placeholder is not active then draw the 
             // line at the end of the text.
@@ -169,11 +203,11 @@ string GUI::Input(
             // just few pixels behind the placeholder, so its vissible
             if(placeholderActive){
                 if(textAlignX == GUI_ALIGN_LEFT){
-                    p1.x = dRect.x + paddingX;
+                    p1.x = dRect.x + paddingRect.left;
                 } else if(textAlignX == GUI_ALIGN_CENTER){
                     p1.x = dRect.x + dRect.w/2;
                 } else if(textAlignX == GUI_ALIGN_RIGHT){
-                    p1.x = dRect.x + dRect.w - paddingX;
+                    p1.x = dRect.x + dRect.w - paddingRect.right;
                 }
             } else {
                 p1.x = textRect.x + textRect.w + 1;
@@ -182,11 +216,11 @@ string GUI::Input(
             // Bottom point of the line
             SDL_Point p2 = {
                 p1.x, 
-                p1.y + (dRect.h - paddingY*2)
+                p1.y + (dRect.h - paddingRect.top - paddingRect.bottom)
             };
             
             // Draw the line
-            GUI::Line(p1, p2, SDL_COLOR_BLACK);
+            GUI::Line(p1, p2, foreground);
         }
     }
     
@@ -206,7 +240,8 @@ string GUI::Input(
     // and there is click, that means that there has been unfocus
     if(
         !Sys::Mouse::isHovering(dRect) &&
-        Sys::Mouse::isClicked()
+        Sys::Mouse::isClicked() &&
+        !state->firstRender
     ){
         Sys::Keyboard::unfocus();
         state->focused = false;
@@ -277,9 +312,13 @@ string GUI::Input(
             textToCompile.erase(0, state->removed);
         }
 
-        TM::createTextTexture(state->td, textToCompile, textRect.h, colorOfText);
+        int err = TM::createTextTexture(state->td, textToCompile, textRect.h, colorOfText);
+        CHECK_ERROR(err);
+         
         state->change = false;
     }
+
+    if(state->firstRender) state->firstRender = false;
 
     // Return the value
     return state->value;
@@ -312,6 +351,18 @@ void GUI::DestroyInput(const string& uniqueId){
     state->value.clear();
     inputStates.erase(it);
     return;
+}
+
+GUI::InputState GUI::getInputState(const string& inputId){
+    InputState* state = nullptr;
+    auto it = inputStates.find(inputId);
+    if(it != inputStates.end()){
+        state = &it->second;
+    } else{
+        return {inputId};
+    }
+
+    return *state;
 }
 
 

@@ -1,5 +1,15 @@
 #include "./gui.h"
 
+/** TODO
+ * 
+ * Make Button with Icons
+ * Make Number Only Input (maybe pushable style)
+ * 
+ * 
+ * 
+ */
+
+
 
 /** Remove Oldest
  * 
@@ -41,25 +51,21 @@ string color2hex(const SDL_Color& color){
 void GUI::setMaxNumOfLoadedTextures(const int& num){ max_num_of_loaded_textures = num; }
 
 
-void GUI::pushFontSize(const uint& fontSize)    { pFontSize = fontSize; }
+void GUI::pushFontSize(uint fontSize)    { pFontSize = fontSize; }
 
-void GUI::pushTextAlignX(const int& value)      { pTextAlignX = value;  }
-void GUI::pushTextAlignY(const int& value)      { pTextAlignY = value;  }
+void GUI::pushTextAlignX(int value)      { pTextAlignX = value;  }
+void GUI::pushTextAlignY(int value)      { pTextAlignY = value;  }
 
 void GUI::pushAutoFocus()                       { pAutoFocus = true;    }
 void GUI::pushInputLock()                       { pInputLock = true;    }
 
-void GUI::pushBorderRadius(const uint& radius)  { 
-    pBorderRadius = {radius, radius, radius, radius};
-}
-void GUI::pushBorderRadius(const BorderRadiusRect& radiusRect) { 
-    pBorderRadius = radiusRect; 
-}
+void GUI::pushBorderRadius(uint radius)         { pBorderRadius = BorderRadiusRect(radius); }
+void GUI::pushBorderRadius(BorderRadiusRect radiusRect) { pBorderRadius = radiusRect; }
 void GUI::pushBorderRadius(
-    const uint& topLeft,
-    const uint& topRight,
-    const uint& bottomLeft,
-    const uint& bottomRight
+    uint topLeft,
+    uint topRight,
+    uint bottomLeft,
+    uint bottomRight
 ){
     pBorderRadius = {
         topLeft,
@@ -68,3 +74,28 @@ void GUI::pushBorderRadius(
         bottomRight
     };
 }
+
+void GUI::pushDefaultValue(string value)     { pDefaultValue = value; }
+void GUI::setInputValue(string inputId, string newValue){
+    // Get the pointer to the inputs state using uniqueId
+    InputState* state = nullptr;
+    auto it = inputStates.find(inputId);
+    if(it != inputStates.end()){
+        state = &it->second;
+    } else{
+        cout << "[WARNING] No input with that id found." << endl;
+        return;
+    }
+
+    state->value = newValue;
+}
+
+void GUI::pushOutlineStyle(int thickness, SDL_Color color){
+    pOutlineThickness = thickness;
+    pOutlineColor = color;
+}
+
+
+void GUI::pushPadding(int padding){ pPaddingRect = paddingRect(padding); }
+void GUI::pushPadding(paddingRect paddingRect) { pPaddingRect = paddingRect; }
+

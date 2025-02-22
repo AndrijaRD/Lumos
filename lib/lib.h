@@ -203,6 +203,13 @@ inline ostream& operator<<(ostream& os, const SDL_Rect& dRect){
     return os;
 }
 
+// SDL_POINT ------------------------------------------------------------------
+inline ostream& operator<<(ostream& os, const SDL_Point& point){
+    os << "Point(" << point.x;
+    os << ", " << point.y << ")";
+    return os;
+}
+
 
 // SDL_COLOR ------------------------------------------------------------------
 inline std::ostream& operator<<(std::ostream& os, const SDL_Color& color){

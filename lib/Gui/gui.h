@@ -21,12 +21,64 @@ struct BorderRadiusRect {
     uint top_right;
     uint bottom_left;
     uint bottom_right;
+
+    BorderRadiusRect(): 
+        top_left(0), 
+        top_right(0), 
+        bottom_left(0), 
+        bottom_right(0) {};
+
+    BorderRadiusRect(uint radius): 
+        top_left(radius), 
+        top_right(radius), 
+        bottom_left(radius), 
+        bottom_right(radius) {};
+    
+    BorderRadiusRect(
+        uint tl, // top-left
+        uint tr, // top-right
+        uint bl, // bottom-left
+        uint br // bottom-right
+    ): 
+        top_left(tl), 
+        top_right(tr), 
+        bottom_left(bl), 
+        bottom_right(br) {};
 };
+
+struct paddingRect {
+    int top;
+    int right;
+    int bottom;
+    int left;
+
+    paddingRect(): top(0), right(0), bottom(0), left(0) {};
+    paddingRect(int padding):
+        top(padding),
+        right(padding),
+        bottom(padding),
+        left(padding)
+    {};
+    paddingRect(
+        int top,
+        int right,
+        int bottom,
+        int left
+    ): 
+        top(top),
+        right(right),
+        bottom(bottom),
+        left(left)
+    {};
+};
+
+
 
 
 string color2hex(const SDL_Color& color);
 
 class GUI{
+    friend class Sys;
 private:
     static inline int max_num_of_loaded_textures = 50;
 
@@ -70,15 +122,55 @@ private:
         bool deleting = false; // Checks if the backspace has been down 
         TextureData td = TextureData(); // The text texture
         bool change = true; // Keeps track of if the value has been changed and texture needs to be reCompiled
+        bool firstRender = true;
 
         InputState(
             const string& id, 
             const string& value = "",
             const bool& focused = false
         ): id(id), value(value), focused(focused) {}
+
+        friend ostream& operator<<(ostream& os, const InputState& state){
+            os << "InputState(";
+            os << "id: " << state.id;
+            os << ", value: " << state.value;
+            os << ", focused: " << state.focused;
+            os << ", firstRender: " << state.firstRender;
+            os << ")";
+            return os;
+        }
     };
 
     static inline unordered_map<string, InputState> inputStates;
+
+
+    struct ContainerState {
+        string id; // Holds the uniqueId
+        int scrollOffset = 0;
+        int scrollSpeed = 20;
+        SDL_Rect dRect;
+        SDL_Texture* containerTex;
+        SDL_Texture* previousRenderTarget;
+        int lastActiveFrame = 0;
+        int contentHeight = 0;
+
+        // For scrollbar dragging:
+        bool scrollbarDragging = false;
+        int scrollbarDragStartMouseY = 0;
+        int scrollbarDragStartScrollOffset = 0;
+
+
+        ContainerState(string _id){
+            id = _id;
+        }
+        ContainerState(string _id, int _scrollOffset, int _scrollSpeed){
+            id = _id;
+            scrollOffset = _scrollOffset;
+            scrollSpeed = _scrollSpeed;
+        }
+    };
+
+    static inline unordered_map<string, ContainerState> containerStates;
 
 
     // Pushed styles
@@ -88,6 +180,10 @@ private:
     static inline bool pAutoFocus = false;
     static inline bool pInputLock = false;
     static inline BorderRadiusRect pBorderRadius = {0, 0, 0, 0};
+    static inline string pDefaultValue = "";
+    static inline int pOutlineThickness = -1;
+    static inline SDL_Color pOutlineColor = {0, 0, 0, 0};
+    static inline paddingRect pPaddingRect = {-1, -1, -1, -1};
 
 public:
     static int Button(
@@ -150,21 +246,38 @@ public:
         const SDL_Color& foreground = SDL_COLOR_BLACK
     );
 
-    static void DestroyInput(const string& uniqueId);
+    static void startContainer(string uniqueId, SDL_Rect rect, int contentMaxHeight);
+    static void endContainer(string uniqueId);
 
-    static void pushFontSize(const uint& fontSize);
-    static void pushTextAlignY(const int& direction);
-    static void pushTextAlignX(const int& direction);
+    static void DestroyInput(const string& inputId);
+    static InputState getInputState(const string& inputId);
+
+    static void pushFontSize(uint fontSize);
+
+    static void pushTextAlignY(int direction);
+    static void pushTextAlignX(int direction);
+
     static void pushAutoFocus();
     static void pushInputLock();
-    static void pushBorderRadius(const uint& radius);
-    static void pushBorderRadius(const BorderRadiusRect& radiusRect);
+
+    static void pushBorderRadius(uint radius);
+    static void pushBorderRadius(BorderRadiusRect radiusRect);
     static void pushBorderRadius(
-        const uint& topLeft,
-        const uint& topRight,
-        const uint& bottomLeft,
-        const uint& bottomRight
+        uint topLeft,
+        uint topRight,
+        uint bottomLeft,
+        uint bottomRight
     );
+
+    static void pushDefaultValue(string value);
+    static void setInputValue(string inputId, string newValue); // Override the current value
+
+    static void pushOutlineStyle(int thickness = -1, SDL_Color color = {0, 0, 0, 0});
+
+    static void pushPadding(int padding);
+    static void pushPadding(paddingRect paddingRect);
+
+    static SDL_Point getMousePosInContainer(const string& containerId);
 };
 
 #endif
