@@ -109,43 +109,43 @@ void GUI::endContainer(string containerId) {
     // --- Dragging Logic ---
     // If mouse is down and either over the thumb or already dragging, update the scroll offset.
     if(Sys::Mouse::isDown() && (Sys::Mouse::isHovering(thumbRect) || state->scrollbarDragging)) {
-         if(!state->scrollbarDragging) {
-             // Start dragging.
-             state->scrollbarDragging = true;
-             state->scrollbarDragStartMouseY = Sys::Mouse::getPos().y;
-             state->scrollbarDragStartScrollOffset = state->scrollOffset;
-         } else {
-             // Update scroll offset based on drag movement.
-             int currentMouseY = Sys::Mouse::getPos().y;
-             int delta = currentMouseY - state->scrollbarDragStartMouseY;
-             // Determine how much movement corresponds to a change in scrollOffset.
-             // The track available for thumb movement is: (container visible height - thumbHeight)
-             float trackMovable = state->dRect.h - thumbHeight;
-             if(trackMovable > 0) {
-                 float scrollChange = ((float) delta / trackMovable) * maxScroll;
-                 state->scrollOffset = state->scrollbarDragStartScrollOffset + (int) scrollChange;
-                 // Clamp scrollOffset.
-                 if(state->scrollOffset < 0)
-                     state->scrollOffset = 0;
-                 if(state->scrollOffset > maxScroll)
-                     state->scrollOffset = maxScroll;
-             }
-         }
+        if(!state->scrollbarDragging) {
+            // Start dragging.
+            state->scrollbarDragging = true;
+            state->scrollbarDragStartMouseY = Sys::Mouse::getPos().y;
+            state->scrollbarDragStartScrollOffset = state->scrollOffset;
+        } else {
+            // Update scroll offset based on drag movement.
+            int currentMouseY = Sys::Mouse::getPos().y;
+            int delta = currentMouseY - state->scrollbarDragStartMouseY;
+            // Determine how much movement corresponds to a change in scrollOffset.
+            // The track available for thumb movement is: (container visible height - thumbHeight)
+            float trackMovable = state->dRect.h - thumbHeight;
+            if(trackMovable > 0) {
+                float scrollChange = ((float) delta / trackMovable) * maxScroll;
+                state->scrollOffset = state->scrollbarDragStartScrollOffset + (int) scrollChange;
+                // Clamp scrollOffset.
+                if(state->scrollOffset < 0)
+                    state->scrollOffset = 0;
+                if(state->scrollOffset > maxScroll)
+                    state->scrollOffset = maxScroll;
+            }
+        }
     } else {
-         // Mouse is not down; end dragging.
-         state->scrollbarDragging = false;
+        // Mouse is not down; end dragging.
+        state->scrollbarDragging = false;
     }
 
     // --- Render Scrollbar ---
     if(showScrollBar) {
-         // Render track.
-         SDL_Color trackColor = {50, 50, 50, 150}; // semi-transparent dark
-         GUI::pushBorderRadius(5);
-         GUI::Rect(scrollBarTrack, trackColor, -1);
+        // Render track.
+        SDL_Color trackColor = {50, 50, 50, 150}; // semi-transparent dark
+        GUI::pushBorderRadius(5);
+        GUI::Rect(scrollBarTrack, trackColor, -1);
 
-         // Render thumb.
-         SDL_Color thumbColor = {200, 200, 200, 200}; // lighter color
-         GUI::Rect(thumbRect, thumbColor, -1);
+        // Render thumb.
+        SDL_Color thumbColor = {200, 200, 200, 200}; // lighter color
+        GUI::Rect(thumbRect, thumbColor, -1);
     }
 
     // Clean up the off-screen texture.

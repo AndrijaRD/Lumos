@@ -89,6 +89,10 @@ class Sys{
             static inline SDL_Point pos = {0, 0};
             static inline bool clicked = false;
             static inline bool down = false;
+            static inline uint mouseDownStartFrame = 0; // Stores the frame that the mouse started being down
+
+            static inline const int clickDuration = 20; // Max number of frames that mouse can be down 
+                                                        // and still be considered a click
 
         public:
             static SDL_Point getPos();

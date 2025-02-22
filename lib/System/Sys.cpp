@@ -187,16 +187,25 @@ int Sys::handleEvents(){
 
     // Calculating the new frame mouse status, is it down
     bool isMouseDown = mouseState & SDL_BUTTON(SDL_BUTTON_LEFT);
+
+    // Check to see if this is the first frame that mouse is down
+    // If last frame Mouse::down was false and now isMouseDown is true
+    // then set mouseDownStartFrame to current Frame
+    if(!Mouse::down && isMouseDown) Mouse::mouseDownStartFrame = Sys::frameCounter;
     
     // If the mouse was clicked last frame (Mouse::down) but now its not
     // that means that it was released this frame, making it a compleat "click"
     Mouse::clicked = false; // Firstly reset it
-    if(Mouse::down && !isMouseDown) Mouse::clicked = true;
+    // Check if the release of the mouse is still considered a click, 
+    // by checking the duretion that the mouse was held down
+    int downDuration = frameCounter - Mouse::mouseDownStartFrame;
+    bool timer = (downDuration <= Mouse::clickDuration);
+    if(Mouse::down && !isMouseDown && timer){
+        Mouse::clicked = true;
+    }
 
     // Now update the Mouse::down
     Mouse::down = isMouseDown;
-
-
 
     // HANDLE EVENTS --------------------------------------------------------------------------------------------------
     SDL_Event event;
@@ -346,7 +355,6 @@ bool Sys::Mouse::isHovering(const SDL_Rect& rect) {
     return pos.x >= rect.x && pos.x <= rect.x+rect.w &&
         pos.y >= rect.y && pos.y <= rect.y+rect.h; 
 }
-
 
 SDL_Keycode Sys::Keyboard::getKeyUp() { return keyUp; }
 SDL_Keycode Sys::Keyboard::getKeyDown() { return keyDown; }
