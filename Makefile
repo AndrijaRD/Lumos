@@ -1,6 +1,9 @@
 # Compiler and flags
 CXX = g++
 CXXFLAGS = -fPIC -Wall -Wextra -O2
+CXXFLAGS += -fstack-protector-strong -fno-omit-frame-pointer
+CXXFLAGS += -std=c++20 -O3 -flto=auto
+CXXFLAGS += -Werror -Wpedantic -Wfloat-equal -Wshadow
 
 # Directories
 SRC_DIR = lib

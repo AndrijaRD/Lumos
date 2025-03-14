@@ -36,6 +36,8 @@ int DB::init(
 
 int DB::prepareStatement(Statement& s){
     if(s.name == "" or s.command == "") return DB_EMPTY_STATEMENT_PARAM;
+    if(s.prepared) return DB_REPREPARATION;
+
     PGresult* res = PQprepare(
         dbConn, 
         s.name.c_str(), 
@@ -101,17 +103,20 @@ bool DB::checkResult(const PGresult* res, const int type){
 int DB::execPrepared(Statement& s, const vector<string>& params, DBResult& result){
     if(!s.prepared) return DB_EXEC_NOT_PREPARED_ERROR;
 
-    const char* formatedParams[s.nParams];
+    //const char* formatedParams[s.nParams];
+    std::vector<const char*> formatedParams;
+    formatedParams.reserve(s.nParams);  // Preallocate memory to avoid reallocation
 
-    for(int i=0; i < (int)params.size(); i++){
-        formatedParams[i] = params.at(i).c_str();
+
+    for (const auto& param : params) {
+        formatedParams.push_back(param.c_str());
     }
 
     result.result = PQexecPrepared(
         dbConn, 
         s.name.c_str(), 
         s.nParams, 
-        formatedParams, 
+        formatedParams.data(), 
         nullptr, 
         nullptr, 
         0

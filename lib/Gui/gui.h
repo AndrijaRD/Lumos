@@ -52,25 +52,15 @@ struct paddingRect {
     int bottom;
     int left;
 
-    paddingRect(): top(0), right(0), bottom(0), left(0) {};
-    paddingRect(int padding):
-        top(padding),
-        right(padding),
-        bottom(padding),
-        left(padding)
-    {};
-    paddingRect(
-        int top,
-        int right,
-        int bottom,
-        int left
-    ): 
-        top(top),
-        right(right),
-        bottom(bottom),
-        left(left)
-    {};
+    paddingRect() : top(0), right(0), bottom(0), left(0) {}
+
+    paddingRect(int padding)
+        : top(padding), right(padding), bottom(padding), left(padding) {}
+
+    paddingRect(int _top, int _right, int _bottom, int _left)
+        : top(_top), right(_right), bottom(_bottom), left(_left) {} 
 };
+
 
 
 
@@ -90,16 +80,18 @@ private:
         int fontSize;
 
         LoadedText(
-            int frame = 0,
-            TextureData td = TextureData(),
-            SDL_Color color = SDL_COLOR_WHITE,
-            string title = "",
-            int fontSize = 0
-        ):  frame(frame), 
-            td(td),
-            color(color),
-            title(title),
-            fontSize(fontSize) {}
+            int _frame = 0, 
+            TextureData _td = TextureData(), 
+            SDL_Color _color = SDL_COLOR_WHITE, 
+            string _title = "", 
+            int _fontSize = 0
+        ) {
+            this->frame = _frame;
+            this->td = _td;
+            this->color = _color;
+            this->title = _title;
+            this->fontSize = _fontSize;
+        }
         
         string getId(){ return getTextID(title, fontSize, color); }
 
@@ -125,10 +117,14 @@ private:
         bool firstRender = true;
 
         InputState(
-            const string& id, 
-            const string& value = "",
-            const bool& focused = false
-        ): id(id), value(value), focused(focused) {}
+            const string& _id, 
+            const string& _value = "",
+            const bool& _focused = false
+        ) {
+            this->id = _id;
+            this->value = _value;
+            this->focused = _focused;
+        }
 
         friend ostream& operator<<(ostream& os, const InputState& state){
             os << "InputState(";
@@ -168,9 +164,21 @@ private:
             scrollOffset = _scrollOffset;
             scrollSpeed = _scrollSpeed;
         }
+
+        friend ostream& operator<<(ostream& os, const ContainerState& state){
+            os << "ContainerState(";
+            os << "id: " << state.id;
+            os << ", scrollOffset: " << state.scrollOffset;
+            os << ", dRect: " << state.dRect;
+            os << ", lastActiveFrame: " << state.lastActiveFrame;
+            os << ", contentHeight: " << state.contentHeight;
+            os << ")";
+            return os;
+        }
     };
 
     static inline unordered_map<string, ContainerState> containerStates;
+    static void renderScrollbar(ContainerState* state);
 
 
     // Pushed styles
@@ -216,7 +224,7 @@ public:
     );
 
     static void clearLoadedTexts();
-    static void setMaxNumOfLoadedTextures(const int& num);
+    static void setMaxNumOfLoadedTextures(const int& num = 50);
     
     static void Rect(
         const SDL_Rect& dRect,
@@ -248,9 +256,12 @@ public:
 
     static void startContainer(string uniqueId, SDL_Rect rect, int contentMaxHeight);
     static void endContainer(string uniqueId);
+    static SDL_Point getMousePosInContainer(const string& containerId);
+    static bool isRectVisibleInContainer(const std::string& containerId, const SDL_Rect& rect);
+    static ContainerState* getContainerState(const string& containerId);
 
     static void DestroyInput(const string& inputId);
-    static InputState getInputState(const string& inputId);
+    static InputState* getInputState(const string& inputId);
 
     static void pushFontSize(uint fontSize);
 
@@ -276,8 +287,6 @@ public:
 
     static void pushPadding(int padding);
     static void pushPadding(paddingRect paddingRect);
-
-    static SDL_Point getMousePosInContainer(const string& containerId);
 };
 
 #endif

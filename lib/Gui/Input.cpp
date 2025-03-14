@@ -353,16 +353,12 @@ void GUI::DestroyInput(const string& uniqueId){
     return;
 }
 
-GUI::InputState GUI::getInputState(const string& inputId){
-    InputState* state = nullptr;
+GUI::InputState* GUI::getInputState(const string& inputId){
     auto it = inputStates.find(inputId);
-    if(it != inputStates.end()){
-        state = &it->second;
-    } else{
-        return {inputId};
-    }
+    if(it != inputStates.end())
+        return &it->second;
 
-    return *state;
+    return nullptr;
 }
 
 

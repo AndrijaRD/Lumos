@@ -26,14 +26,14 @@ struct Statement {
     bool prepared;
 
     Statement(
-        const string& name = "",
-        const string& command = "",
-        const int numOfParams = 0,
-        const int commandType = SQL_SELECT
-    ):  name(name), 
-        command(command),
-        nParams(numOfParams),
-        type(commandType), 
+        const string& _name = "",
+        const string& _command = "",
+        const int _numOfParams = 0,
+        const int _commandType = SQL_SELECT
+    ):  name(_name), 
+        command(_command),
+        nParams(_numOfParams),
+        type(_commandType), 
         prepared(false) 
     {}
 };

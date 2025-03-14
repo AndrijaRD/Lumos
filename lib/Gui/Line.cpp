@@ -29,7 +29,12 @@ void GUI::Line(
     float length = std::sqrt(dx * dx + dy * dy);
     
     // Avoid division by zero.
-    if (length == 0) {
+    // THIS LOGIC CHECKS IF LENGTH IS == TO 0
+    // But since comparing floating-point with ‘==’ or ‘!=’ is unsafe [-Werror=float-equal]
+    // The only way is to check if the abs value of length is less then 
+    // the smallest threshold for floating-point comparisons
+    const double EPSILON = 1e-6;
+    if (std::abs(length) < EPSILON) {
         return;
     }
     

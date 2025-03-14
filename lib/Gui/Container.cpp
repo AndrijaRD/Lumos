@@ -14,6 +14,7 @@ void GUI::startContainer(string containerId, SDL_Rect rect, int contentHeight) {
         state = &containerStates.at(containerId);
     }
 
+    SDL_DestroyTexture(state->containerTex);
     state->containerTex = SDL_CreateTexture(
         Sys::r,
         SDL_PIXELFORMAT_RGBA8888,
@@ -41,12 +42,9 @@ void GUI::endContainer(string containerId) {
 
     auto it = containerStates.find(containerId);
     if (it != containerStates.end()) {
-        // Save the pointer to that LoadedText item
         state = &it->second;
     } else {
-        // If the state doesnt exist, create it
-        containerStates.insert({containerId, ContainerState(containerId)});
-        state = &containerStates.at(containerId);
+        return;
     }
 
     SDL_SetRenderTarget(Sys::r, state->previousRenderTarget);
@@ -61,7 +59,14 @@ void GUI::endContainer(string containerId) {
     // Copy the off-screen texture onto the main renderer.
     SDL_RenderCopy(Sys::r, state->containerTex, &srcRect, &state->dRect);
 
+    renderScrollbar(state);
 
+    int currentFrame = Sys::getCurrentFrame();
+    state->lastActiveFrame = currentFrame;
+}
+
+
+void GUI::renderScrollbar(ContainerState* state){
      // --- Scrollbar Logic ---
 
     // Determine if we should show the scrollbar.
@@ -147,12 +152,9 @@ void GUI::endContainer(string containerId) {
         SDL_Color thumbColor = {200, 200, 200, 200}; // lighter color
         GUI::Rect(thumbRect, thumbColor, -1);
     }
-
-    // Clean up the off-screen texture.
-    SDL_DestroyTexture(state->containerTex);
-    state->containerTex = nullptr;
-    state->lastActiveFrame = currentFrame;
 }
+
+
 
 
 SDL_Point GUI::getMousePosInContainer(const std::string& containerId) {
@@ -171,5 +173,35 @@ SDL_Point GUI::getMousePosInContainer(const std::string& containerId) {
     };
 
     return relativeMousePos;
+}
+
+bool GUI::isRectVisibleInContainer(const std::string& containerId, const SDL_Rect& rect) {
+    auto it = containerStates.find(containerId);
+    if (it == containerStates.end()) {
+        // If the container does not exist, nothing is visible.
+        return false;
+    }
+    const ContainerState& state = it->second;
+    
+    // The visible portion of the container's off-screen texture is:
+    SDL_Rect visibleRect = { 0, state.scrollOffset, state.dRect.w, state.dRect.h };
+    
+    // Check for intersection:
+    bool intersects = 
+        (rect.x < visibleRect.x + visibleRect.w) &&
+        (rect.x + rect.w > visibleRect.x) &&
+        (rect.y < visibleRect.y + visibleRect.h) &&
+        (rect.y + rect.h > visibleRect.y);
+    
+    return intersects;
+}
+
+
+GUI::ContainerState* GUI::getContainerState(const string& containerId){
+    auto it = containerStates.find(containerId);
+    if (it != containerStates.end())
+        return &(it->second);
+
+    return nullptr;
 }
 

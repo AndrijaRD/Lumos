@@ -14,7 +14,8 @@
  */
 int TM::loadTexture(
     TextureData& td, 
-    const string& path
+    const string& path,
+    const string& id
 ){
     // Ensure that privous Texture is de-loaded -----------------------------------------
     if(td.tex != nullptr) TM::freeTexture(td);
@@ -25,7 +26,9 @@ int TM::loadTexture(
 
     // Check the format of the image ----------------------------------------------------
     if(surface->format->BitsPerPixel != 32){
-        surface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA32, 0);
+        SDL_Surface* converted = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA32, 0);
+        SDL_FreeSurface(surface);  // Free the original surface
+        surface = converted;
         if(surface == nullptr){
             return TM_SURFACE_CONVERT_ERROR;
         }
@@ -62,10 +65,6 @@ int TM::loadTexture(
     }
 
 
-    // CLEAN UP ---------------------------------------------------------------------------
-    SDL_FreeSurface(surface);
-    loadedTextures.push_back(td.tex);
-
     // MAKE TEXTURE UPDATATBLE/MODIFIABLE -------------------------------------------------
     if(SDL_SetTextureBlendMode(td.tex, SDL_BLENDMODE_BLEND)){
         SDL_FreeSurface(surface);
@@ -77,6 +76,15 @@ int TM::loadTexture(
     SDL_QueryTexture(td.tex, &td.format, NULL, &td.width, &td.height);
     td.orgWidth = td.width;
     td.orgHeight = td.height;
+
+    // FILL TD DATA
+    td.path = path;
+    if(id.empty()) td.id = fs::path(path).filename().string();
+    else td.id = id;
+
+    // CLEAN UP ---------------------------------------------------------------------------
+    SDL_FreeSurface(surface);
+    loadedTextures.insert({td.tex, td.id});
     
     return NO_ERROR;
 }
@@ -90,14 +98,12 @@ int TM::loadTexture(
  * @param td TextureData to be freeed
  */
 void TM::freeTexture(TextureData& td){
-    if(td.tex != nullptr){
+    if(td.tex == nullptr) return;
 
-        auto it = std::remove(loadedTextures.begin(), loadedTextures.end(), td.tex);
-        loadedTextures.erase(it, loadedTextures.end());
+    loadedTextures.erase(td.tex);
 
-        SDL_DestroyTexture(td.tex);
-        td.tex = nullptr;
-    }
+    SDL_DestroyTexture(td.tex);
+    td.tex = nullptr;
 
     td.width = 0;
     td.height = 0;
@@ -125,9 +131,7 @@ void TM::freeTexture(TextureData& td){
  * Called at the end of the program to free all of the textures
 */
 void TM::cleanup(){
-    for(auto tex : loadedTextures){
-        SDL_DestroyTexture(tex);
-    }
+    for(auto td : loadedTextures) SDL_DestroyTexture(td.first);
     loadedTextures.clear();
 }
 
@@ -139,8 +143,18 @@ void TM::cleanup(){
  * 
  * Returns the number of currently loaded textures.
  */
-int TM::getLoadedTextures(){ return loadedTextures.size(); }
-
+int TM::countLoadedTextures(){ return loadedTextures.size(); }
+void TM::printLoadedTextures(){
+    cout << "There are " << loadedTextures.size() << " loaded Textures: " << endl;
+    int i = 0;
+    for(auto td : loadedTextures){
+        cout << "\t(" << i << ") " << td.second << ": " << td.first << endl;
+        i++;
+    }
+}
+unordered_map<SDL_Texture*, string> TM::getLoadedTextures(){
+    return loadedTextures;
+}
 
 
 
@@ -229,13 +243,16 @@ int TM::createTextTexture(
         return TM_TEXTURE_SET_BLENDMODE_ERROR;
     }
 
+    td.path = "TEXT";
+    td.id = "TEXT-" + text;
+
     // GET TEXTURE DIMENSIONS -------------------------------------------------------------
     SDL_QueryTexture(td.tex, &td.format, NULL, &td.width, &td.height);
     td.orgWidth = td.width;
     td.orgHeight = td.height;
 
     SDL_FreeSurface(surface);
-    loadedTextures.push_back(td.tex);
+    loadedTextures.insert({td.tex, td.id});
 
     return NO_ERROR;
 }
@@ -299,8 +316,10 @@ int TM::copy(const TextureData& src, TextureData& dst){
     dst.format = src.format;
     dst.orgWidth = src.orgWidth;
     dst.orgHeight = src.orgHeight;
+    dst.path = src.path;
+    dst.id = dst.id + "(copy)";
 
-    loadedTextures.push_back(dst.tex);
+    loadedTextures.insert({dst.tex, dst.id});
 
     return NO_ERROR;
 };
@@ -539,5 +558,26 @@ int TextureData::drawOverlayText(const string& text, SDL_Rect& dRect, const SDL_
 }
 
 
+
+
+void TM::exportTexture(SDL_Texture* texture, string path){
+    if(texture == nullptr) return;
+
+    SDL_Texture* target = SDL_GetRenderTarget(Sys::renderer);
+    SDL_SetRenderTarget(Sys::renderer, texture);
+
+    int width, height;
+    SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+
+    SDL_Surface* surface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+
+    SDL_RenderReadPixels(Sys::r, NULL, surface->format->format, surface->pixels, surface->pitch);
+    IMG_SavePNG(surface, path.c_str());
+    
+    SDL_FreeSurface(surface);
+    SDL_SetRenderTarget(Sys::renderer, target);
+}
+
+void TM::exportTexture(const TextureData& td, string path){ exportTexture(td.tex, path); }
 
 

@@ -85,6 +85,7 @@ inline Uint32 toUint32(const SDL_Color& color) {
 #define DB_INVALID_ROW_COLUMN           0x45
 #define DB_INVALID_RES_VALUE            0x46
 #define DB_EMPTY_STATEMENT_PARAM        0x47
+#define DB_REPREPARATION                0x48
 //  DB RESERVED                         0x5f
 
 
@@ -178,6 +179,24 @@ inline string time2string(const timeT& time){
 }
 
 
+
+
+// Get Timestamp --------------------------------------------------------------
+inline int getTimestamp(const dateT& date, const timeT& time){
+    std::tm t = {};
+    // mktime expects years since 1900, months 0–11
+    t.tm_year = static_cast<int>(date.year) - 1900;
+    t.tm_mon  = static_cast<int>(date.month) - 1;
+    t.tm_mday = static_cast<int>(date.day);
+    t.tm_hour = static_cast<int>(time.hour);
+    t.tm_min  = static_cast<int>(time.minute);
+    t.tm_sec  = static_cast<int>(time.second);
+    
+    // std::mktime converts local time to time_t (seconds since epoch)
+    // Note: mktime uses the current locale’s timezone.
+    time_t timestamp = std::mktime(&t);
+    return static_cast<int>(timestamp);
+}
 
 // Size -----------------------------------------------------------------------
 struct Size {

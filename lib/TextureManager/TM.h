@@ -13,13 +13,17 @@ struct TextureData{
     int height;
     int orgWidth;
     int orgHeight;
+    string path;
+    string id;
 
     TextureData(
         SDL_Texture* t = nullptr,
         Uint32 f = SDL_PIXELFORMAT_RGBA32,
         int w = 0,
-        int h = 0
-    ): tex(t), format(f), width(w), height(h) {};
+        int h = 0,
+        string p = "",
+        string _id = "empty"
+    ): tex(t), format(f), width(w), height(h), path(p), id(_id) {};
 
     int drawOverlayTexture(
         const TextureData& td,
@@ -54,11 +58,12 @@ struct TextureData{
 // CREATE << OPERATOR HANDLE FUNC ------------------------------------------------------------------
 inline std::ostream& operator<<(std::ostream& os, const TextureData& td){
     os << "TextureData(";
-        os << td.tex;
+        os << "ID: " << td.id;
+        os << "Tex: " << td.tex;
         os << ", Format: " << td.format;
-        os << ", w: " << td.width;
-        os << "px, h: " << td.height;
-    os << "px)";
+        os << ", W: " << td.width << "px";
+        os << ", H: " << td.height << "px";
+    os << ")";
     return os;
 }
 
@@ -66,16 +71,23 @@ inline std::ostream& operator<<(std::ostream& os, const TextureData& td){
 
 class TM{
     private:
-    static inline vector<SDL_Texture*> loadedTextures;
+    static inline unordered_map<SDL_Texture*, string> loadedTextures;
 
     public:
-    static int loadTexture(TextureData& td, const string& path);
+    static int loadTexture(
+        TextureData& td, 
+        const string& path, 
+        const string& id = ""
+    );
 
     static void freeTexture(TextureData& td);
     // static void freeTexture(SDL_Texture* tex); // Dangerous, dangling pointer left
 
     static void cleanup();
-    static int getLoadedTextures();
+
+    static int countLoadedTextures();
+    static void printLoadedTextures();
+    static unordered_map<SDL_Texture*, string> getLoadedTextures();
 
     static int renderTexture(const TextureData& td, SDL_Rect& dr);
 
@@ -93,6 +105,9 @@ class TM{
         int width,
         int height = -1
     );
+
+    static void exportTexture(const TextureData& td, string path);
+    static void exportTexture(SDL_Texture* texture, string path);
 };
 
 #endif

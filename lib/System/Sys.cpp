@@ -36,7 +36,8 @@ unordered_map<int, string> Sys::errorMap = {
     {DB_INVALID_RESULT,                 "DB_INVALID_RESULT"},
     {DB_INVALID_ROW_COLUMN,             "DB_INVALID_ROW_COLUMN"},
     {DB_INVALID_RES_VALUE,              "DB_INVALID_RES_VALUE"},
-    {DB_EMPTY_STATEMENT_PARAM,          "DB_EMPTY_STATEMENT_PARAM"}
+    {DB_EMPTY_STATEMENT_PARAM,          "DB_EMPTY_STATEMENT_PARAM"},
+    {DB_REPREPARATION,                  "DB_REPREPARATION"}
 };
 
 
@@ -317,7 +318,9 @@ int Sys::cleanup(){
     SDL_DestroyWindow(win);
     SDL_DestroyRenderer(r);
     TTF_Quit();
+    IMG_Quit();
     SDL_Quit();
+
 
     cout << "Game Finished." << endl;
     return NO_ERROR;
