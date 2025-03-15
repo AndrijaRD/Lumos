@@ -104,6 +104,8 @@ class DB{
     static inline PGconn* dbConn = nullptr;
 
     public:
+    static inline PGconn* const& conn = dbConn; // PGconn pointer exposed to the global code, but as read-only
+
     static int init(
         const string& dbName,
         const string& username = "postgres",
