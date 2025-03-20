@@ -27,6 +27,7 @@ unordered_map<int, string> Sys::errorMap = {
     {TM_STSM_FAILED,                    "TM_STSM_FAILED"},
     {TM_FILL_RECT_ERROR,                "TM_FILL_RECT_ERROR"},
     {TM_INVALID_LINE_LENGTH,            "TM_INVALID_LINE_LENGTH"},
+    {TM_MAT_INVALID_FORMAT,             "TM_MAT_INVALID_FORMAT"},
     
 
     {DB_CONNECTION_ERROR,               "DB_CONNECTION_ERROR"},
@@ -92,7 +93,7 @@ int Sys::initWindow(
 
     // CREATE RENDERER -----------------------------------------------------
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
-    r = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+    r = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
     if(r){
         cout << "[INIT] Renderer created..." << endl;
     }

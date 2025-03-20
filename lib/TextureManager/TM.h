@@ -4,6 +4,14 @@
 
 #include "../lib.h"
 
+#include <opencv2/opencv.hpp>
+#include <opencv2/dnn.hpp>
+#include <dlib/opencv.h>
+#include <dlib/image_processing.h>
+#include <dlib/image_processing/frontal_face_detector.h>
+#include <dlib/image_io.h>
+#include "opencv2/highgui.hpp"
+
 
 // GENERAL STRUCT FOR IMAGES -----------------------------------------------------------------------
 struct TextureData{
@@ -59,7 +67,7 @@ struct TextureData{
 inline std::ostream& operator<<(std::ostream& os, const TextureData& td){
     os << "TextureData(";
         os << "ID: " << td.id;
-        os << "Tex: " << td.tex;
+        os << ", Tex: " << td.tex;
         os << ", Format: " << td.format;
         os << ", W: " << td.width << "px";
         os << ", H: " << td.height << "px";
@@ -106,8 +114,12 @@ class TM{
         int height = -1
     );
 
+    static int cvMat2Texture(const cv::Mat& mat, TextureData& td);
+
     static void exportTexture(const TextureData& td, string path);
     static void exportTexture(SDL_Texture* texture, string path);
+
+    static bool saveSurfaceToFile(SDL_Surface* surface, const string& filename);
 };
 
 #endif

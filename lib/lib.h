@@ -40,6 +40,17 @@ namespace fs = std::filesystem;
 #define SDL_COLOR_GRAY          {120,   120,    120,    255}
 #define SDL_COLOR_M_GUN         {32,    32,     45,     255}
 
+#define WIN_COLOR SDL_Color{31, 31, 31, 255}
+#define BG_COLOR  SDL_Color{46, 46, 46, 255}
+#define FG_COLOR  SDL_Color{62, 62, 62, 255}
+#define ACT_COLOR SDL_Color{88, 88, 88, 255}
+#define TXT_COLOR SDL_Color{224, 224, 224, 225}
+
+#define MODERN_BLACK    SDL_Color{20, 19, 28, 255}
+#define MODERN_BLUE     SDL_Color{42, 67, 161, 255}
+#define MODERN_GREEN    SDL_Color{31, 83, 28, 255}
+#define MODERN_RED      SDL_Color{174, 41, 63, 255}
+
 inline Uint32 toUint32(const SDL_Color& color) {
     return (static_cast<Uint32>(color.r) << 24) |
            (static_cast<Uint32>(color.g) << 16) |
@@ -75,6 +86,7 @@ inline Uint32 toUint32(const SDL_Color& color) {
 #define TM_STSM_FAILED                  0x2b        // SDL_SetTextureScaleMode  Failed
 #define TM_FILL_RECT_ERROR              0x2c        // SDL_RenderFillRect       Failed
 #define TM_INVALID_LINE_LENGTH          0x2d
+#define TM_MAT_INVALID_FORMAT           0x2e
 //  TM RESERVED                         0x3f
 
 #define DB_CONNECTION_ERROR             0x40
@@ -248,6 +260,31 @@ inline int SDL_SetRenderDrawColor(SDL_Renderer* renderer, const SDL_Color& color
 
 inline int SDL_RenderDrawLine(SDL_Renderer* renderer, const SDL_Point p1, const SDL_Point p2){
     return SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);
+}
+
+
+// OVERLOAD
+
+inline SDL_Point operator+(const SDL_Point& p1, const SDL_Point& p2) {
+    return SDL_Point{ p1.x + p2.x, p1.y + p2.y };
+}
+
+inline SDL_Rect operator+(const SDL_Rect& rect, const SDL_Point& point) {
+    return SDL_Rect{ 
+        rect.x + point.x, 
+        rect.y + point.y,
+        rect.w,
+        rect.h
+    };
+}
+
+inline SDL_Rect operator*(const SDL_Rect& rect, float scale) {
+    return SDL_Rect{ 
+        static_cast<int>(rect.x * scale), 
+        static_cast<int>(rect.y * scale),
+        static_cast<int>(rect.w * scale),
+        static_cast<int>(rect.h * scale)
+    };
 }
 
 #endif

@@ -99,3 +99,10 @@ void GUI::pushOutlineStyle(int thickness, SDL_Color color){
 void GUI::pushPadding(int padding){ pPaddingRect = paddingRect(padding); }
 void GUI::pushPadding(paddingRect paddingRect) { pPaddingRect = paddingRect; }
 
+void GUI::pushDashLineStyle(int dashLineSize, int dashGapSize){
+    pDashLine = true;
+    pDashSize = dashLineSize;
+    pDashGapSize = dashGapSize;
+}
+
+

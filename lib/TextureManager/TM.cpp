@@ -107,9 +107,6 @@ void TM::freeTexture(TextureData& td){
 
     td.width = 0;
     td.height = 0;
-    td.format = 0;
-    td.orgWidth = 0;
-    td.orgHeight = 0;
 }
 
 // This should be avoided as it leaves dangling pointer and risks the use-after-free segmentation fault
@@ -556,6 +553,57 @@ int TextureData::drawOverlayText(const string& text, SDL_Rect& dRect, const SDL_
 
     return NO_ERROR;
 }
+
+
+bool TM::saveSurfaceToFile(SDL_Surface* surface, const string& filename) {
+    if (!surface) {
+        std::cerr << "Error: Surface is null." << std::endl;
+        return false;
+    }
+
+    if (IMG_SavePNG(surface, filename.c_str()) != 0) {
+        std::cerr << "IMG_SavePNG error: " << IMG_GetError() << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+
+/**
+ * cv::Mat must be RGBA format.
+ */
+int TM::cvMat2Texture(const cv::Mat& mat, TextureData& td) {
+    if (td.tex != nullptr) TM::freeTexture(td);
+
+    if(mat.channels() != 4) return TM_MAT_INVALID_FORMAT;
+
+    SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(
+        (void*)mat.data,
+        mat.cols,
+        mat.rows,
+        32,
+        static_cast<int>(mat.step[0]),
+        0x000000ff,
+        0x0000ff00,
+        0x00ff0000,
+        0xff000000
+    );
+    td.tex = SDL_CreateTextureFromSurface(Sys::renderer, surface);
+
+    // Free the temporary surface.
+    SDL_FreeSurface(surface);
+
+    // Retrieve texture dimensions.
+    SDL_QueryTexture(td.tex, &td.format, NULL, &td.width, &td.height);
+    td.orgWidth = td.width;
+    td.orgHeight = td.height;
+
+    // Store the texture pointer in your global container.
+    loadedTextures.insert({td.tex, td.id});
+    return NO_ERROR;
+}
+
 
 
 

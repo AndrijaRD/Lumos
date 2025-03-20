@@ -192,8 +192,13 @@ private:
     static inline int pOutlineThickness = -1;
     static inline SDL_Color pOutlineColor = {0, 0, 0, 0};
     static inline paddingRect pPaddingRect = {-1, -1, -1, -1};
+    static inline bool pDashLine = false;
+    static inline int pDashSize = 0;
+    static inline int pDashGapSize = 0;
 
 public:
+    static void drawThickLineSegment(const SDL_Point& p1, const SDL_Point& p2, const SDL_Color& color, int thickness);
+
     static int Button(
         const string& title, 
         const SDL_Rect& dRect,
@@ -287,6 +292,8 @@ public:
 
     static void pushPadding(int padding);
     static void pushPadding(paddingRect paddingRect);
+
+    static void pushDashLineStyle(int dashLineSize, int dashGapSize);
 };
 
 #endif
