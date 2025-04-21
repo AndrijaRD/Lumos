@@ -1,8 +1,13 @@
-#include "../../lib/Lumos.h"
-
+#include "../../lib/lib.h"
+#include "../../lib/System/Sys.h"
+#include "../../lib/TextureManager/TM.h"
+#include "../../lib/Gui/gui.h"
+#include "../../lib/PqDB/db.h"
 
 int main(){
     int error;
+
+    cout << "VERSION: " << VERSION << endl;
 
     // First thing that needs to be done is for general system
     // to be initialized which created some variabled like:
@@ -51,11 +56,36 @@ int main(){
     // error message did the function return the macro
     // will, if error is present, print out the message
 
+    // GOOD FUNCTIONS
+    // TM::exportTexture()
+    // TM::loadTexture()
+    // TM::exportSurface()
+    // TM::convert_textureTo(td, myMat);
+    // TM::convert_toTexture(myMat, td);
+    // TM::copyTexture(srcTd, dstTd);
+    // TM::resizeTexture(td, newWidth, newHeight);
+    //
+    // GUI::Image();
+    // GUI::Text();
+    // GUI::Button();
+    //
+    // GUI::Rect();
+    // GUI::Circle();
+    // GUI::Line();
+    // 
+    // GUI::pushBorderRadius();
 
+    TextureData td;
+    TM::loadTexture(td, "./opencv_test.png");
+    
+    
+
+    SDL_Rect dRect = {50, 50, 400, 200};
+    SDL_Rect imgRect = {10, 250, 200, 100};
 
     // MAIN APP LOOP ---------------------------------------------------
     cout << "Game Started...\n\n" << endl;
-    while(Sys::isRunning){
+    while(Sys::isRunning) {
         // This function needs to be runned
         // at the start of every frame, it:
         //      - Clears the screen
@@ -64,24 +94,24 @@ int main(){
         Sys::handleEvents();
 
         // App Code and Logic...
+        GUI::Rect(dRect, SDL_COLOR_RED, 1);
+        GUI::beginContainer("myContainer", dRect, 600);
+
+        GUI::Button("Hello", imgRect);
+
+        GUI::endContainer();
 
         // TAnd this is runned at the end of the each frame to make
         // sure that frame rate is stable and to draw the current 
         // renderer onto the screen
         Sys::presentFrame();
+        cout << "---" << endl;
     }
-
-    // FPS that app is running on can be changed using:
-    //              Sys::setFPS(newFPS)
-    // Or you can view the current FPS using:
-    //                  Sys::getFPS()
-
-
 
 
     // At the end of the app these two lines need to be
     // called to makes sure that all of the textures
     // and resources are freed
-    TM::cleanup();
+    // TM::cleanup();
     return Sys::cleanup();
 }

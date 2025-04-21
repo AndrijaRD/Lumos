@@ -11,8 +11,32 @@
         std::cout << "[ERROR] " << Sys::checkError((error)) << std::endl;
 
 
+/**
+ * @brief This functions just checks if a given point
+ * is within the bounds of some rect.
+ * 
+ * This should not be used to check if mouse is hovering some rect
+ * as it doesnt take into account the containers offset.
+ * 
+ * @param point SDL_Point, relative point
+ * @param rect SDL_Rect, relative rect
+ * @return bool
+ */
 bool isPointInRect(SDL_Point point, SDL_Rect rect);
 
+/**
+ * @brief Checks if some point, which has absolute coordinates
+ * ,relative to the window (0, 0), is inside some rect
+ * that is a part of the container so the coordinates of the 
+ * rect have to be calibrated and turned into absolute coordinates too.
+ * 
+ * The most reasonable usecase of this would be if user needs to
+ * check if the mouse position falls onto some rect that is inside the container.
+ * 
+ * @return true 
+ * @return false 
+ */
+bool isAbsolutePointInContainerRect(SDL_Point point, SDL_Rect rect);
 
 class Sys{
     friend class Mouse;
@@ -28,8 +52,8 @@ class Sys{
 
     static inline int maxFPS = 120;
     static inline int minFPS = 30;
-    // static inline bool dynamicFPS = false;  // If this is true, the game will constantly change FPS as
-                                            // the game is unable to too well able to catch up
+    // static inline bool dynamicFPS = false;   // If this is true, the game will constantly change FPS as
+                                                // the game is unable to too well able to catch up
     static inline int FPS = 60;
     static inline uint frameCounter             = 0;
     static inline Uint64 frameStart             = 0;
@@ -47,7 +71,17 @@ class Sys{
 
     static unordered_map<int, string> errorMap;
 
-    // static inline bool showWarnings = true;
+    static inline std::mutex pendingJobsMutex;
+    static inline std::condition_variable pendingJobsCV;
+    static inline vector<weak_ptr<asyncData>> pendingJobs;
+
+    static void processPendingJobs();
+
+    static inline DebugLevels debugLevel = All;
+    static void printf_info(string msg);
+    static void printf_warn(string msg);
+    static void printf_err(string msg);
+    static void printf_err(int error_code);
 
     public:
     static int initWindow(
@@ -66,6 +100,9 @@ class Sys{
 
     static int getOS();
     static void setClearColor(const SDL_Color& color);
+
+    static inline thread::id mainThreadId;
+    static bool isMainThread();
 
     static int getFPS();
     static void setFPS(const int& newFPS);
@@ -94,11 +131,45 @@ class Sys{
             static inline const int clickDuration = 20; // Max number of frames that mouse can be down 
                                                         // and still be considered a click
 
-        public:
-            static SDL_Point getPos();
+        public: 
+            /**
+             * @brief Get the current mouse position
+             * If there is some currently active container the position
+             * will be relative to the container start, if
+             * containerRelative is set to true, which by default is.
+             * 
+             * @param containerRelative If this is set to false, you will get coordinates relative to the window's (0, 0)
+             * @return SDL_Point
+             */
+            static SDL_Point getPos(bool containerRelative = true);
+
+            /**
+             * @brief Returns boolean, was mouse clicked this frame
+             * Click is considered true if the last frame the mouse was
+             * down and this frame its not
+             * 
+             * @return bool
+             */
             static bool isClicked();
+
+            /**
+             * @brief Checks if the mouse left click is pressed down
+             * 
+             * @return bool
+             */
             static bool isDown();
-            static bool isHovering(const SDL_Rect& area);
+
+            /**
+             * @brief Checks if mouse is hovering some area, some rectangle
+             * If containerRelative is set to true then function first checks
+             * if there are any active containers, if so the coordinates are
+             * calibrated as such.
+             * 
+             * @param area SDL_Rect of the rectangle in question
+             * @param containerRelative Should the mouse be calibrated to active container
+             * @return bool
+             */
+            static bool isHovering(const SDL_Rect& area, bool containerRelative = true);
     };
 
     class Keyboard{

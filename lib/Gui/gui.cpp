@@ -1,37 +1,11 @@
 #include "./gui.h"
-
+#include "../System/Sys.h"
 /** TODO
  * 
  * Make Button with Icons
  * Make Number Only Input (maybe pushable style)
  * 
- * 
- * 
  */
-
-
-
-/** Remove Oldest
- * 
- * INTERNAL USE
- * 
- * Used for removing the oldest text texture of loadedTexts map.
- */
-void GUI::removeOldest(){
-    // Iterator to the oldest object
-    auto oldestIt = loadedTexts.begin();
-
-    // Iterate through the map and find the oldest element
-    for (auto it = loadedTexts.begin(); it != loadedTexts.end(); ++it) {
-        if (oldestIt == loadedTexts.begin() || oldestIt->second > it->second) {
-            oldestIt = it;
-        }
-    }
-
-    // Free the texture and erase the item from the map
-    TM::freeTexture(oldestIt->second.td);
-    loadedTexts.erase(oldestIt);
-}
 
 
 
@@ -48,7 +22,7 @@ string color2hex(const SDL_Color& color){
 
 
 
-void GUI::setMaxNumOfLoadedTextures(const int& num){ max_num_of_loaded_textures = num; }
+void GUI::setMaxNumOfLoadedTextures(int num){ MAX_LOADED_TEXTS = num; }
 
 
 void GUI::pushFontSize(uint fontSize)    { pFontSize = fontSize; }
@@ -83,7 +57,7 @@ void GUI::setInputValue(string inputId, string newValue){
     if(it != inputStates.end()){
         state = &it->second;
     } else{
-        cout << "[WARNING] No input with that id found." << endl;
+        Sys::printf_warn("No input with that id found.");
         return;
     }
 

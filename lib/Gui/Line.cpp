@@ -13,11 +13,11 @@
 
 // Helper: Draw a thick line segment (from p1 to p2) using the rectangle method.
 // This is essentially the same as your original geometry code.
-void GUI::drawThickLineSegment(const SDL_Point& p1, const SDL_Point& p2, const SDL_Color& color, int thickness) {
+void drawThickLineSegment(const SDL_Point& p1, const SDL_Point& p2, const SDL_Color& color, int thickness) {
     // For a thickness of 1, we can simply draw a normal line.
     if (thickness <= 1) {
-        SDL_SetRenderDrawColor(Sys::renderer, color.r, color.g, color.b, color.a);
-        SDL_RenderDrawLine(Sys::renderer, p1.x, p1.y, p2.x, p2.y);
+        TM::_SetRenderDrawColor(Sys::renderer, color.r, color.g, color.b, color.a);
+        TM::_RenderDrawLine(Sys::renderer, p1.x, p1.y, p2.x, p2.y);
         return;
     }
 
@@ -61,7 +61,7 @@ void GUI::drawThickLineSegment(const SDL_Point& p1, const SDL_Point& p2, const S
     vertices[3].tex_coord = { 0.f, 0.f };
 
     int indices[6] = { 0, 1, 2, 0, 2, 3 };
-    SDL_RenderGeometry(Sys::renderer, nullptr, vertices, 4, indices, 6);
+    TM::_RenderGeometry(Sys::renderer, nullptr, vertices, 4, indices, 6);
 }
 
 

@@ -6,21 +6,30 @@ PKG_CONFIG  = pkg-config
 SRC_DIR     = lib
 BUILD_DIR   = build
 
-# OpenCV flags from pkg-config
-OPENCV_CFLAGS := $(shell $(PKG_CONFIG) --cflags opencv4 | sed 's/-I/-isystem /g')
-OPENCV_LIBS   := $(shell $(PKG_CONFIG) --libs opencv4)
+# -------------------------------------------------------------------
+# 1) Make sure make itself sees the right pkg‐config path:
+override PKG_CONFIG_PATH := /usr/local/lib/pkgconfig:$(PKG_CONFIG_PATH)
+
+# 2) If your distro names it opencv.pc instead of opencv4.pc, fall back:
+PKG_CONFIG ?= pkg-config
+OPENCV_PKG := $(shell $(PKG_CONFIG) --exists opencv4 && echo opencv4 || echo opencv)
+
+# 3) Now safely grab CFLAGS & LDFLAGS:
+OPENCV_CFLAGS := $(shell $(PKG_CONFIG) --cflags  $(OPENCV_PKG) | sed 's/-I/-isystem /g')
+OPENCV_LIBS   := $(shell $(PKG_CONFIG) --libs    $(OPENCV_PKG))
 
 # Compiler Flags
 CXXFLAGS  = -fPIC -Wall -Wextra \
             -fstack-protector-strong -fno-omit-frame-pointer \
-            -std=c++20 -O3 -flto=auto \
+            $(OPENCV_CFLAGS) \
+            -std=c++20 -O3 -flto=auto 
             #-Werror -Wpedantic -Wfloat-equal -Wshadow \
-            $(OPENCV_CFLAGS)
+            #-std=c++20 -O0 -g -fdiagnostics-color=always
 
 # Library flags
 LDFLAGS = -L/usr/local/lib -lLumos $(shell pkg-config --libs Lumos) -lSDL2 -lSDL2_ttf -lSDL2_image -lpq \
-          -ldlib -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_imgcodecs -lopencv_dnn -llapack -lblas -lcblas \
-          -lpng -ljxl -lX11 -lgif -ljxl_threads -ljpeg -lwebp `pkg-config --cflags --libs opencv4`
+          -ldlib -lopencv_dnn -llapack -lblas -lcblas $(OPENCV_LIBS) \
+          -lpng -ljxl -lX11 -lgif -ljxl_threads -ljpeg -lwebp `pkg-config --cflags --libs opencv4` 
 
 
 # Source and Object Files
@@ -44,6 +53,6 @@ $(TARGET_LIB): $(OBJ_FILES)
 
 # Clean: Remove build directory and generated library
 clean:
-	rm -rf $(BUILD_DIR) $(TARGET_LIB)
+	rm -fr $(BUILD_DIR) $(TARGET_LIB)
 
 .PHONY: clean

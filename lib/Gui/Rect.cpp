@@ -137,7 +137,7 @@ void drawDashedLineRect(
     }
     // If no valid segmentation is found, fallback to a single dash (solid line)
     if(bestN < 2) {
-        GUI::drawThickLineSegment(start, end, color, thickness);
+        drawThickLineSegment(start, end, color, thickness);
         return;
     }
 
@@ -160,7 +160,7 @@ void drawDashedLineRect(
             start.x + static_cast<int>(ux * dashEnd),
             start.y + static_cast<int>(uy * dashEnd)
         };
-        GUI::drawThickLineSegment(segStart, segEnd, color, thickness);
+        drawThickLineSegment(segStart, segEnd, color, thickness);
     }
 }
 
@@ -196,7 +196,7 @@ void drawRoundedFilledRect(
         indices.push_back(i);
         indices.push_back(i + 1);
     }
-    SDL_RenderGeometry(Sys::renderer, nullptr,
+    TM::_RenderGeometry(Sys::renderer, nullptr,
                        fanVerts.data(), static_cast<int>(fanVerts.size()),
                        indices.data(), static_cast<int>(indices.size()));
 }
@@ -249,7 +249,7 @@ void drawRoundedOutlineRect(
         indices.push_back(base + 2);
         indices.push_back(base + 3);
     }
-    SDL_RenderGeometry(Sys::renderer, nullptr,
+    TM::_RenderGeometry(Sys::renderer, nullptr,
                        borderVerts.data(), static_cast<int>(borderVerts.size()),
                        indices.data(), static_cast<int>(indices.size()));
 }
@@ -307,7 +307,7 @@ void drawDashedEdge(
         SDL_Point p2 = { start.x + static_cast<int>(ux * dashEnd),
                 start.y + static_cast<int>(uy * dashEnd) };
         
-        GUI::drawThickLineSegment(p1, p2, color, thickness);
+        drawThickLineSegment(p1, p2, color, thickness);
         offset += effectivePattern;
     }
 }
@@ -324,7 +324,7 @@ void drawRoundedCorners(const SDL_Rect& dRect, const BorderRadiusRect& br, const
         for (size_t i = 0; i < arc.size()-1; i++) {
             SDL_Point p1 = { static_cast<int>(arc[i].x), static_cast<int>(arc[i].y) };
             SDL_Point p2 = { static_cast<int>(arc[i+1].x), static_cast<int>(arc[i+1].y) };
-            GUI::drawThickLineSegment(p1, p2, color, thickness);
+            drawThickLineSegment(p1, p2, color, thickness);
         }
     }
     // Top-right corner
@@ -335,7 +335,7 @@ void drawRoundedCorners(const SDL_Rect& dRect, const BorderRadiusRect& br, const
         for (size_t i = 0; i < arc.size()-1; i++) {
             SDL_Point p1 = { static_cast<int>(arc[i].x), static_cast<int>(arc[i].y) };
             SDL_Point p2 = { static_cast<int>(arc[i+1].x), static_cast<int>(arc[i+1].y) };
-            GUI::drawThickLineSegment(p1, p2, color, thickness);
+            drawThickLineSegment(p1, p2, color, thickness);
         }
     }
     // Bottom-right corner
@@ -346,7 +346,7 @@ void drawRoundedCorners(const SDL_Rect& dRect, const BorderRadiusRect& br, const
         for (size_t i = 0; i < arc.size()-1; i++) {
             SDL_Point p1 = { static_cast<int>(arc[i].x), static_cast<int>(arc[i].y) };
             SDL_Point p2 = { static_cast<int>(arc[i+1].x), static_cast<int>(arc[i+1].y) };
-            GUI::drawThickLineSegment(p1, p2, color, thickness);
+            drawThickLineSegment(p1, p2, color, thickness);
         }
     }
     // Bottom-left corner
@@ -357,7 +357,7 @@ void drawRoundedCorners(const SDL_Rect& dRect, const BorderRadiusRect& br, const
         for (size_t i = 0; i < arc.size()-1; i++) {
             SDL_Point p1 = { static_cast<int>(arc[i].x), static_cast<int>(arc[i].y) };
             SDL_Point p2 = { static_cast<int>(arc[i+1].x), static_cast<int>(arc[i+1].y) };
-            GUI::drawThickLineSegment(p1, p2, color, thickness);
+            drawThickLineSegment(p1, p2, color, thickness);
         }
     }
 }
@@ -366,46 +366,16 @@ void drawRoundedCorners(const SDL_Rect& dRect, const BorderRadiusRect& br, const
 
 
 
-void GUI::Rect(
-    const SDL_Rect& dRect, 
-    const SDL_Color& color, 
-    const int thickness
-) {
-    BorderRadiusRect borderRadius = pBorderRadius;
-    pBorderRadius = {0, 0, 0, 0};
 
-    // Check if border radius per side is bigger then the side it self
-    // example i set border radius to be 30px and height of the rect is 40px
-    // then the max allowed border radius per corner should be 20px
-    
-    uint rectW = static_cast<unsigned int>(std::abs(dRect.w));
-    uint rectH = static_cast<unsigned int>(std::abs(dRect.h));
-    if(borderRadius.top_left + borderRadius.bottom_left > rectH){
-        borderRadius.top_left = rectH/2;
-        borderRadius.bottom_left = rectH/2;
-    }
 
-    if(borderRadius.top_right + borderRadius.bottom_right > rectH){
-        borderRadius.top_right = rectH/2;
-        borderRadius.bottom_right = rectH/2;
-    }
 
-    if(borderRadius.top_left + borderRadius.top_right > rectW){
-        borderRadius.top_left = rectW/2;
-        borderRadius.top_right = rectW/2;
-    }
 
-    if(borderRadius.bottom_left + borderRadius.bottom_right > rectW){
-        borderRadius.bottom_left = rectW/2;
-        borderRadius.bottom_right = rectW/2;
-    }
-
-    // If no rounded corners are requested, use SDL’s routines.
-    bool noRounded = (borderRadius.top_left == 0 && borderRadius.top_right == 0 &&
-                      borderRadius.bottom_left == 0 && borderRadius.bottom_right == 0);
-
-    SDL_SetRenderDrawColor(Sys::renderer, color.r, color.g, color.b, color.a);
-    
+void GUI::renderRect(
+    const SDL_Rect& dRect,
+    const SDL_Color& color,
+    const int thickness,
+    const BorderRadiusRect& borderRadius
+){
     // ----------------------------------------------------------------------------------------
     // UNDASHED RECT ----------------------------------------------------------------------------   
     
@@ -429,9 +399,14 @@ void GUI::Rect(
     // FIRST WE DEAL WITH RECTS THAT ARE FILLED, SOLID
     // --------------------------------------------------------------------------------------------
     // --------------------------------------------------------------------------------------------
+    
+    // If no rounded corners are requested, use SDL’s routines.
+    bool noRounded = (borderRadius.top_left == 0 && borderRadius.top_right == 0 &&
+        borderRadius.bottom_left == 0 && borderRadius.bottom_right == 0);
+
 
     if(thickness == -1){
-        if(noRounded) SDL_RenderFillRect(Sys::renderer, &dRect);
+        if(noRounded) TM::_RenderFillRect(Sys::renderer, &dRect);
         else          drawRoundedFilledRect(dRect, borderRadius, color, arcSegments);
 
         return;
@@ -488,7 +463,7 @@ void GUI::Rect(
             fillerSize, 
             fillerSize 
         };
-        SDL_RenderFillRect(Sys::renderer, &cornerRect);
+        TM::_RenderFillRect(Sys::renderer, &cornerRect);
 
         // Top-right corner filler.
         cornerRect = { 
@@ -497,7 +472,7 @@ void GUI::Rect(
             fillerSize, 
             fillerSize 
         };
-        SDL_RenderFillRect(Sys::renderer, &cornerRect);
+        TM::_RenderFillRect(Sys::renderer, &cornerRect);
 
         // Bottom-right corner filler.
         cornerRect = { 
@@ -506,7 +481,7 @@ void GUI::Rect(
             fillerSize, 
             fillerSize 
         };
-        SDL_RenderFillRect(Sys::renderer, &cornerRect);
+        TM::_RenderFillRect(Sys::renderer, &cornerRect);
 
         // Bottom-left corner filler.
         cornerRect = { 
@@ -515,12 +490,9 @@ void GUI::Rect(
             fillerSize, 
             fillerSize 
         };
-        SDL_RenderFillRect(Sys::renderer, &cornerRect);
+        TM::_RenderFillRect(Sys::renderer, &cornerRect);
         return;
     }
-
-
-
 
 
 
@@ -559,4 +531,96 @@ void GUI::Rect(
     drawDashedEdge(rightEdgeStart, rightEdgeEnd, color, thickness, pDashSize, pDashGapSize);
     drawDashedEdge(bottomEdgeStart, bottomEdgeEnd, color, thickness, pDashSize, pDashGapSize);
     drawDashedEdge(leftEdgeStart, leftEdgeEnd, color, thickness, pDashSize, pDashGapSize);
+}
+
+
+
+
+
+
+
+
+void GUI::Rect(
+    const SDL_Rect& dRect, 
+    const SDL_Color& color, 
+    const int thickness
+) {
+    BorderRadiusRect borderRadius = pBorderRadius;
+    pBorderRadius = {0, 0, 0, 0};
+
+    // Check if border radius per side is bigger then the side it self
+    // example i set border radius to be 30px and height of the rect is 40px
+    // then the max allowed border radius per corner should be 20px
+    
+    uint rectW = static_cast<unsigned int>(std::abs(dRect.w));
+    uint rectH = static_cast<unsigned int>(std::abs(dRect.h));
+    if(borderRadius.top_left + borderRadius.bottom_left > rectH){
+        borderRadius.top_left = rectH/2;
+        borderRadius.bottom_left = rectH/2;
+    }
+
+    if(borderRadius.top_right + borderRadius.bottom_right > rectH){
+        borderRadius.top_right = rectH/2;
+        borderRadius.bottom_right = rectH/2;
+    }
+
+    if(borderRadius.top_left + borderRadius.top_right > rectW){
+        borderRadius.top_left = rectW/2;
+        borderRadius.top_right = rectW/2;
+    }
+
+    if(borderRadius.bottom_left + borderRadius.bottom_right > rectW){
+        borderRadius.bottom_left = rectW/2;
+        borderRadius.bottom_right = rectW/2;
+    }
+    
+    // ---------------------------------------------------------------------------------------
+
+    TextureData canvas;
+    SDL_Texture* tex = TM::_CreateTexture(
+        Sys::renderer,
+        SDL_PIXELFORMAT_RGBA32,
+        SDL_TEXTUREACCESS_TARGET,
+        dRect.w,
+        dRect.h
+    );
+    if(tex == nullptr) {
+        Sys::printf_err(TM_TEXTURE_CREATE_ERROR);
+        return;
+    }
+
+    // Set Scake Mode for the Texture -------------------------------------------------------------
+    int err = TM::_SetTextureScaleMode(tex, SDL_ScaleModeLinear);
+    if(err){
+        Sys::printf_err(TM_STSM_FAILED);
+        TM::_DestroyTexture(tex);
+        return;
+    }
+    
+    // Make texture Updatable/Modifiable ----------------------------------------------------------
+    if(TM::_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND)){
+        Sys::printf_err(TM_TEXTURE_SET_BLENDMODE_ERROR);
+        TM::_DestroyTexture(tex);
+        return;
+    }
+
+    canvas.setTexture(tex);
+    canvas.reloadInfo();
+
+    SDL_Rect mutable_dRect = dRect;
+    mutable_dRect.x = 0;
+    mutable_dRect.y = 0;
+
+    auto oldRenderTarget = TM::_GetRenderTarget(Sys::renderer);
+    TM::_SetRenderTarget(Sys::renderer, canvas.getTexture());
+    
+    TM::_SetRenderDrawColor(Sys::renderer, color);
+    renderRect(mutable_dRect, color, thickness, borderRadius);
+    
+    TM::_SetRenderTarget(Sys::renderer, oldRenderTarget);
+
+    mutable_dRect = dRect;
+    GUI::Image(canvas, mutable_dRect);
+
+    return;
 }

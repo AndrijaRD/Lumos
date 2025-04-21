@@ -143,7 +143,7 @@ string GUI::Input(
     }
 
     // TEXT RECT WIDTH ---------------------------------------------------
-    textRect.w = textRect.h * (float)state->td.width / state->td.height;
+    textRect.w = textRect.h * (float)state->td.getWidth() / state->td.getHeight();
 
     // TEXT RECT X POS ---------------------------------------------------
     // Depending on the placement, left, center, right. Default: left
@@ -167,7 +167,7 @@ string GUI::Input(
 
 
     // Render the text
-    TM::renderTexture(state->td, textRect);
+    GUI::Image(state->td, textRect);
 
     if(inputLock) GUI::Rect(dRect, {120, 120, 120, 120});
 
@@ -296,7 +296,7 @@ string GUI::Input(
 
     // Now handle the value changes and updating the texture
     if(state->change){
-        TM::freeTexture(state->td);
+        state->td.setTexture(nullptr);
         
         string textToCompile;
         SDL_Color colorOfText = foreground;
@@ -345,7 +345,7 @@ void GUI::DestroyInput(const string& uniqueId){
         return;
     }
 
-    TM::freeTexture(state->td);
+    state->td.setTexture(nullptr);
     Sys::Keyboard::unfocus();
     state->focused = false;
     state->value.clear();

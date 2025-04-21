@@ -29,7 +29,6 @@ unordered_map<int, string> Sys::errorMap = {
     {TM_INVALID_LINE_LENGTH,            "TM_INVALID_LINE_LENGTH"},
     {TM_MAT_INVALID_FORMAT,             "TM_MAT_INVALID_FORMAT"},
     
-
     {DB_CONNECTION_ERROR,               "DB_CONNECTION_ERROR"},
     {DB_PREPARE_ERROR,                  "DB_PREPARE_ERROR"},
     {DB_EXEC_RESULT_ERROR,              "DB_EXEC_RESULT_ERROR"},
@@ -38,7 +37,9 @@ unordered_map<int, string> Sys::errorMap = {
     {DB_INVALID_ROW_COLUMN,             "DB_INVALID_ROW_COLUMN"},
     {DB_INVALID_RES_VALUE,              "DB_INVALID_RES_VALUE"},
     {DB_EMPTY_STATEMENT_PARAM,          "DB_EMPTY_STATEMENT_PARAM"},
-    {DB_REPREPARATION,                  "DB_REPREPARATION"}
+    {DB_REPREPARATION,                  "DB_REPREPARATION"},
+
+    {INVALID_ARGUMENTS_PASSED,          "INVALID_ARGUMENTS_PASSED"}
 };
 
 
@@ -56,6 +57,9 @@ int Sys::initWindow(
     const int& windowWidth,
     const int& windowHeight
 ){
+    // SET THE MAIN THREAD ID ----------------------------------------------
+    mainThreadId = this_thread::get_id();
+
     Sys::windowTitle = winTitle;
     Sys::isFullscreen = fullscreen;
     Sys::wWidth = windowWidth;
@@ -93,7 +97,7 @@ int Sys::initWindow(
 
     // CREATE RENDERER -----------------------------------------------------
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
-    r = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
+    r = TM::_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
     if(r){
         cout << "[INIT] Renderer created..." << endl;
     }
@@ -102,8 +106,8 @@ int Sys::initWindow(
         return SYS_RENDERER_INIT_ERROR;
     }
     
-    SDL_SetRenderDrawBlendMode(r, SDL_BLENDMODE_BLEND);
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+    TM::_SetRenderDrawBlendMode(r, SDL_BLENDMODE_BLEND);
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 
     return NO_ERROR;
 }
@@ -149,6 +153,132 @@ TTF_Font* Sys::getFont(const int& fontSize){
 
 
 
+
+void Sys::processPendingJobs(){
+    // steal the queue under lock
+    std::vector<weak_ptr<asyncData>> jobs;
+    {
+        std::lock_guard lk(pendingJobsMutex);
+        jobs.swap(pendingJobs);
+    }
+
+    // execute each job immediately on the main thread
+    for (auto& job : jobs) {
+        auto sp = job.lock();
+        if(!sp) continue;
+
+        int code = 0xffffffff;
+
+        switch(sp->pendingFunction){
+            case LOAD_TEXTURE: {
+                auto td   = std::any_cast<TextureData>( sp->params[0] );
+                auto path = std::any_cast<std::string>( sp->params[1] );
+                auto id   = std::any_cast<std::string>( sp->params[2] );
+
+                // call your real implementation *on* the main thread:
+                code = TM::loadTexture(td, path, id);
+                break;
+            }
+
+            case CREATE_TEXT_TEXTURE: {
+                auto td       = std::any_cast<TextureData>( sp->params[0] );
+                auto text     = std::any_cast<string>(      sp->params[1] );
+                auto fontSize = std::any_cast<int>(         sp->params[2] );
+                auto color    = std::any_cast<SDL_Color>(   sp->params[3] );
+
+                // call your real implementation *on* the main thread:
+                code = TM::createTextTexture(td, text, fontSize, color);
+                break;
+            }
+            
+            case COPY_TEXTURE: {
+                auto src = std::any_cast<const TextureData&>( sp->params[0] );
+                auto dst = std::any_cast<TextureData&>( sp->params[1] );
+
+                // call your real implementation *on* the main thread:
+                code = TM::copyTexture(src, dst);
+                break;
+            }
+            
+            case RESIZE_TEXTURE: {
+                auto td = std::any_cast<TextureData>(    sp->params[0] );
+                auto newWidth  =     std::any_cast<int>( sp->params[1] );
+                auto newHeight =     std::any_cast<int>( sp->params[2] );
+
+                // call your real implementation *on* the main thread:
+                code = TM::resizeTexture(td, newWidth, newHeight);
+                break;
+            }
+
+            case EXPORT_TEXTURE: {
+                auto path = std::any_cast<std::string>( sp->params[0] );
+                auto td   = std::any_cast<TextureData>( sp->params[1] );
+
+                // call your real implementation *on* the main thread:
+                code = TM::exportTexture(path, td);
+                break;
+            }
+
+            case CONVERT_TO_TEX: {
+                any input   = sp->params[0];
+                auto output = std::any_cast<TextureData&>( sp->params[1] );
+                
+                // Check what type is the input
+                if(input.type() == typeid(const cv::Mat&)){
+
+                    // call your real implementation *on* the main thread:
+                    code = TM::convert_toTexture(
+                        std::any_cast<const cv::Mat&>(input), 
+                        output
+                    );
+                }
+
+                break;
+            }
+
+            case CONVERT_TEX_TO: {
+                auto input = std::any_cast<const TextureData&>(sp->params[0]);
+                any output = sp->params[1];
+                
+                // Check what type is the output
+                if(output.type() == typeid(cv::Mat&)){
+
+                    // call your real implementation *on* the main thread:
+                    code = TM::convert_textureTo(
+                        input, 
+                        std::any_cast<cv::Mat&>(output)
+                    );
+                }
+
+                break;
+            }
+
+            default:
+                break;  
+        }
+
+        // If the code hasnt been changed
+        // meaning some bad variables have been passed as the job
+        if(code == (int)0xffffffff){
+            Sys::printf_warn(
+                "ProcessPendingJobs(): got 0xffffffff code;" 
+                "job->pendingFunction = " + 
+                to_string(sp->pendingFunction)
+            );
+        }
+
+        // mark it done and wake the waiter
+        {
+            std::lock_guard lk(pendingJobsMutex);
+            sp->result = code;
+            sp->done   = true;
+        }
+        pendingJobsCV.notify_all();
+    }
+}
+
+
+
 /** Handle Events
  * 
  * This function should be runned at the start of each frame.
@@ -159,6 +289,8 @@ TTF_Font* Sys::getFont(const int& fontSize){
  */
 int Sys::handleEvents(){
     uint64_t error = NO_ERROR;
+
+    Sys::processPendingJobs();
 
     // Calculate the delta Time --------------------------------------------------------------------------------------
     frameStart = SDL_GetTicks();
@@ -172,8 +304,8 @@ int Sys::handleEvents(){
 
 
     // Clear the screen ----------------------------------------------------------------------------------------------
-    SDL_SetRenderDrawColor(Sys::r, clearColor);
-    SDL_RenderClear(Sys::r);
+    TM::_SetRenderDrawColor(Sys::r, clearColor);
+    TM::_RenderClear(Sys::r);
 
 
     // Keyboard Focus
@@ -232,8 +364,12 @@ int Sys::handleEvents(){
             Keyboard::text += event.text.text;
         }
 
+        // Scrolling
         if(event.type == SDL_MOUSEWHEEL){
+
+            // Container updating
             for(auto& state : GUI::containerStates){
+
                 if(state.second.lastActiveFrame + 1 == getCurrentFrame()){
                     if(Mouse::isHovering(state.second.dRect)){
                         state.second.scrollOffset -= event.wheel.y * state.second.scrollSpeed;
@@ -243,16 +379,6 @@ int Sys::handleEvents(){
                         state.second.scrollOffset = clamp(state.second.scrollOffset, 0, maxScroll);
                     }
                 }
-                // How to see which of the states should be 
-                // updated, which ones are visible, active
-                //
-                // Then update them by looking if they
-                // are being hovered
-                //
-                // Maybe if container has been rendered last frame, 
-                // its active, So if lastActiveFrame+1, is equal to
-                // current frame, then consider it active
-                // and check for hovering and update scrollOffset
             }
         }
     }
@@ -275,7 +401,7 @@ int Sys::presentFrame(){
     uint64_t error = NO_ERROR;
 
     // PRESENT THE NEW FRAME ON THE SCREEN ----------------------------------------------------------------------------
-    SDL_RenderPresent(Sys::r);
+    TM::_RenderPresent(Sys::r);
 
 
     // FRAME DELAY ----------------------------------------------------------------------------------------------------
@@ -317,11 +443,10 @@ int Sys::presentFrame(){
 int Sys::cleanup(){
     // DESTROY AND FREE EVERYTHING ------------------------------------------------------------------------------------
     SDL_DestroyWindow(win);
-    SDL_DestroyRenderer(r);
+    TM::_DestroyRenderer(r);
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
-
 
     cout << "Game Finished." << endl;
     return NO_ERROR;
@@ -351,13 +476,37 @@ void Sys::setFPS(const int& newFPS ) { FPS = min(max(20, newFPS), 144); }
 // }
 int Sys::getCurrentFrame() { return frameCounter; }
 
+// MOUSE ----------------------------------------------------------------------------
 
-SDL_Point Sys::Mouse::getPos() { return pos; }
+SDL_Point Sys::Mouse::getPos(bool containerRelative) { 
+
+    // Check if there are any container to take into account
+    if(containerRelative && !GUI::activeContainer.empty()){
+        auto container = GUI::getContainerState(GUI::activeContainer);
+        SDL_Point relativePoint = pos;
+
+        relativePoint.x -= container->dRect.x;
+        relativePoint.y = pos.y - container->dRect.y + container->scrollOffset;
+
+        return relativePoint;
+    }
+
+    return pos;
+}
+
 bool Sys::Mouse::isClicked() { return clicked; }
+
 bool Sys::Mouse::isDown() { return down; }
-bool Sys::Mouse::isHovering(const SDL_Rect& rect) { 
-    return pos.x >= rect.x && pos.x <= rect.x+rect.w &&
-        pos.y >= rect.y && pos.y <= rect.y+rect.h; 
+
+bool Sys::Mouse::isHovering(const SDL_Rect& rect, bool containerRelative) { 
+    SDL_Point relativePosition = getPos(containerRelative);
+
+    return (
+        relativePosition.x >= rect.x && 
+        relativePosition.x <= rect.x + rect.w &&
+        relativePosition.y >= rect.y && 
+        relativePosition.y <= rect.y + rect.h
+    ); 
 }
 
 SDL_Keycode Sys::Keyboard::getKeyUp() { return keyUp; }
@@ -371,14 +520,70 @@ void Sys::Keyboard::unfocus() { pendingUnFocus = true; }
 
 
 bool isPointInRect(SDL_Point point, SDL_Rect rect){
-    if (
+    return (
         point.x >= rect.x && 
         point.x <= rect.x + rect.w &&
         point.y >= rect.y && 
         point.y <= rect.y + rect.h
-    ) return true;
+    );
+}
 
-    return false;
+bool isAbsolutePointInContainerRect(SDL_Point point, SDL_Rect rect){
+    // Check if there are any container to take into account
+    if(!GUI::activeContainer.empty()){
+        auto container = GUI::getContainerState(GUI::activeContainer);
+        
+        rect.x += container->dRect.x;
+        rect.y = rect.y - container->scrollOffset + container->dRect.y;
+    }
+
+    return (
+        point.x >= rect.x && 
+        point.x <= rect.x + rect.w &&
+        point.y >= rect.y && 
+        point.y <= rect.y + rect.h
+    );
+}
+
+
+bool Sys::isMainThread(){
+    return this_thread::get_id() == mainThreadId;
+}
+
+
+void Sys::printf_info(string msg){
+    if(Sys::debugLevel == All){
+        cout << "[INFO] " << msg << endl;
+    }
+}
+
+void Sys::printf_warn(string msg){
+    if(
+        Sys::debugLevel == All || 
+        Sys::debugLevel == Warnings
+    ){
+        cout << "[WARN] " << msg << endl;
+    }
+}
+
+void Sys::printf_err(string msg){
+    if(
+        Sys::debugLevel == All      || 
+        Sys::debugLevel == Warnings ||
+        Sys::debugLevel == Errors
+    ){
+        cout << "[ERROR] " << msg << endl;
+    }
+}
+
+void Sys::printf_err(int error_code){
+    if(
+        Sys::debugLevel == All      || 
+        Sys::debugLevel == Warnings ||
+        Sys::debugLevel == Errors
+    ){
+        cout << "[ERROR] " << errorMap[error_code] << endl;
+    }
 }
 
 

@@ -1,7 +1,8 @@
 #include "gui.h"
 #include "../System/Sys.h"
 
-void GUI::startContainer(string containerId, SDL_Rect rect, int contentHeight) {
+
+GUI::ContainerState* GUI::getContainerState(const string& containerId){
     ContainerState* state = nullptr;
 
     auto it = containerStates.find(containerId);
@@ -14,59 +15,48 @@ void GUI::startContainer(string containerId, SDL_Rect rect, int contentHeight) {
         state = &containerStates.at(containerId);
     }
 
-    SDL_DestroyTexture(state->containerTex);
-    state->containerTex = SDL_CreateTexture(
-        Sys::r,
-        SDL_PIXELFORMAT_RGBA8888,
-        SDL_TEXTUREACCESS_TARGET,
-        rect.w,
-        contentHeight
-    );
-
-    Uint8 r, g, b, a;
-    SDL_GetRenderDrawColor(Sys::r, &r, &g, &b, &a);
-
-    state->previousRenderTarget = SDL_GetRenderTarget(Sys::r);
-
-    // Set the off-screen texture as the current render target.
-    SDL_SetRenderTarget(Sys::r, state->containerTex);
-    SDL_SetRenderDrawColor(Sys::r, r, g, b, a);
-    SDL_RenderClear(Sys::r);
-    state->dRect = rect;
-    state->contentHeight = contentHeight;
+    return state;
 }
 
 
-void GUI::endContainer(string containerId) {
+void GUI::beginContainer(
+    const string& containerId, 
+    const SDL_Rect& rect, 
+    int contentHeight
+) {
+    auto state = getContainerState(containerId);
+
+    state->dRect = rect;
+    state->contentHeight = contentHeight;
+
+    activeContainer = containerId;
+}
+
+
+void GUI::endContainer() {
+    ContainerState* state = nullptr;
+    if(!activeContainer.empty()){
+        state = getContainerState(activeContainer);
+    } else return;
+
+
+    // renderScrollbar(state);
+    
+    state->lastActiveFrame = Sys::getCurrentFrame();
+    activeContainer.clear();
+}
+
+
+void GUI::renderScrollbar(){
     ContainerState* state = nullptr;
 
-    auto it = containerStates.find(containerId);
+    auto it = containerStates.find(activeContainer);
     if (it != containerStates.end()) {
         state = &it->second;
     } else {
         return;
     }
 
-    SDL_SetRenderTarget(Sys::r, state->previousRenderTarget);
-
-    SDL_Rect srcRect = {
-        0,                         // start at left edge of texture
-        state->scrollOffset,       // vertical offset into the texture
-        state->dRect.w,            // same width as container
-        state->dRect.h             // visible height of the container
-    };
-
-    // Copy the off-screen texture onto the main renderer.
-    SDL_RenderCopy(Sys::r, state->containerTex, &srcRect, &state->dRect);
-
-    renderScrollbar(state);
-
-    int currentFrame = Sys::getCurrentFrame();
-    state->lastActiveFrame = currentFrame;
-}
-
-
-void GUI::renderScrollbar(ContainerState* state){
      // --- Scrollbar Logic ---
 
     // Determine if we should show the scrollbar.
@@ -155,7 +145,7 @@ void GUI::renderScrollbar(ContainerState* state){
 }
 
 
-
+/**
 
 SDL_Point GUI::getMousePosInContainer(const std::string& containerId) {
     auto it = containerStates.find(containerId);
@@ -205,3 +195,4 @@ GUI::ContainerState* GUI::getContainerState(const string& containerId){
     return nullptr;
 }
 
+*/

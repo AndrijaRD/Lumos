@@ -2,21 +2,30 @@
 #ifndef MySDL
 #define MySDL
 
+#include <iostream>             // std
+#include <filesystem>           // std::filesystem
+#include <SDL2/SDL.h>           // Global SDL
+#include <SDL2/SDL_ttf.h>       // Fonts
+#include <SDL2/SDL_image.h>     // IMG_Load
+#include <vector>               // vector<>
+#include <algorithm>            // For std::remove
+#include <libpq-fe.h>           // For PosgreSQL DB
+#include <unordered_map>        // For unordered_map<type, type>
+#include <set>                  // For sets (gui.h)
+#include <future>               // For promises, async (TM)
+#include <thread>               // For handling threads
+#include <any>                  // std::any
+#include <opencv2/opencv.hpp>   // Opencv, Mat
+#include <opencv2/core.hpp>     // Opencv Core
+#include <opencv2/imgproc.hpp>  // Opencv Color
 
-#include <iostream>         // std
-#include <filesystem>       // std::filesystem
-#include <SDL2/SDL.h>       // Global SDL
-#include <SDL2/SDL_ttf.h>   // Fonts
-#include <SDL2/SDL_image.h> // IMG_Load
-#include <vector>           // vector<>
-#include <algorithm>        // For std::remove
-#include <libpq-fe.h>       // For PosgreSQL DB
-#include <unordered_map>    // For unordered_map<type, type>
-#include <set>              // For sets (gui.h)
+#include "LumosForbidSDL.h"
 
 
 using namespace std;
 namespace fs = std::filesystem;
+
+#define VERSION 2.5
 
 
 
@@ -78,13 +87,13 @@ inline Uint32 toUint32(const SDL_Color& color) {
 #define TM_TEXTURE_SET_BLENDMODE_ERROR  0x23
 #define TM_TEXTURE_UPDATE_ERROR         0x24
 #define TM_GOT_NULLPTR_TEX              0x25
-#define TM_INVALID_DRECT                0x26        // SDL_Rect dRect           Invalid
-#define TM_RCPY_FAILED                  0x27        // SDL_RenderCopy           Failed
-#define TM_SRT_FAILED                   0x28        // SDL_SetRenderTarget      Failed
-#define TM_SRDC_FAILED                  0x29        // SDL_SetRenderDrawColor   Failed
-#define TM_RCLR_FAILED                  0x2a        // SDL_RenderClear          Failed
-#define TM_STSM_FAILED                  0x2b        // SDL_SetTextureScaleMode  Failed
-#define TM_FILL_RECT_ERROR              0x2c        // SDL_RenderFillRect       Failed
+#define TM_INVALID_DRECT                0x26        // SDL_Rect dRect           - Invalid
+#define TM_RCPY_FAILED                  0x27        // SDL_RenderCopy           - Failed
+#define TM_SRT_FAILED                   0x28        // SDL_SetRenderTarget      - Failed
+#define TM_SRDC_FAILED                  0x29        // SDL_SetRenderDrawColor   - Failed
+#define TM_RCLR_FAILED                  0x2a        // SDL_RenderClear          - Failed
+#define TM_STSM_FAILED                  0x2b        // SDL_SetTextureScaleMode  - Failed
+#define TM_FILL_RECT_ERROR              0x2c        // SDL_RenderFillRect       - Failed
 #define TM_INVALID_LINE_LENGTH          0x2d
 #define TM_MAT_INVALID_FORMAT           0x2e
 //  TM RESERVED                         0x3f
@@ -99,6 +108,11 @@ inline Uint32 toUint32(const SDL_Color& color) {
 #define DB_EMPTY_STATEMENT_PARAM        0x47
 #define DB_REPREPARATION                0x48
 //  DB RESERVED                         0x5f
+
+// GENERAL PURPOUSE
+#define INVALID_ARGUMENTS_PASSED        0x60
+
+#define UNKNOWN_ERROR                   -1
 
 
 
@@ -251,16 +265,120 @@ inline std::ostream& operator<<(std::ostream& os, const SDL_Color& color){
     return os;
 }
 
-
-// WRAPPERS -------------------------------------------------------------------
-
-inline int SDL_SetRenderDrawColor(SDL_Renderer* renderer, const SDL_Color& color){
-    return SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+/** 
+ * @brief Converts SDL_Color into hex representation of the color "#rrggbbaa"
+ * 
+ * @param color SDL_Color
+ * @return string formated "#rrggbbaa"
+ */
+inline string sdlColor2hex(SDL_Color color){
+    std::ostringstream oss;
+    oss << '#'
+        << std::hex << std::setfill('0')
+        << std::setw(2) << static_cast<int>(color.r)
+        << std::setw(2) << static_cast<int>(color.g)
+        << std::setw(2) << static_cast<int>(color.b)
+        << std::setw(2) << static_cast<int>(color.a);
+    // reset format flags if you care about subsequent ostream use…
+    return oss.str();
 }
 
-inline int SDL_RenderDrawLine(SDL_Renderer* renderer, const SDL_Point p1, const SDL_Point p2){
-    return SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);
+/** 
+ * @brief Converts Hex Color String into SDL_Color object.
+ * 
+ * Valid formats are "#rgb", "#rgba", "#rrggbb" and "#rrggbbaa"
+ * 
+ * @param hex Hex code of the color
+ * @return SDL_Color object
+ */
+inline SDL_Color hex2sdlColor(string hex){
+    SDL_Color out{0,0,0,255};
+
+    // Must start with '#'
+    if (hex.size() < 4 || hex[0] != '#')
+        return out;
+
+    // drop the '#'
+    hex.erase(hex.begin());
+
+    auto hexToByte = [&](char c) -> int {
+        c = static_cast<char>(std::tolower(c));
+        if (c >= '0' && c <= '9') return c - '0';
+        if (c >= 'a' && c <= 'f') return 10 + (c - 'a');
+        return 0;
+    };
+
+    auto parsePair = [&](int idx) -> Uint8 {
+        return static_cast<Uint8>((hexToByte(hex[idx]) << 4) | hexToByte(hex[idx+1]));
+    };
+
+    switch (hex.size()) {
+      case 3:
+        // rgb -> rr,gg,bb and alpha=FF
+        out.r = static_cast<Uint8>(hexToByte(hex[0]) * 0x11);
+        out.g = static_cast<Uint8>(hexToByte(hex[1]) * 0x11);
+        out.b = static_cast<Uint8>(hexToByte(hex[2]) * 0x11);
+        out.a = 255;
+        break;
+      case 4:
+        // rgba -> rr,gg,bb,aa
+        out.r = static_cast<Uint8>(hexToByte(hex[0]) * 0x11);
+        out.g = static_cast<Uint8>(hexToByte(hex[1]) * 0x11);
+        out.b = static_cast<Uint8>(hexToByte(hex[2]) * 0x11);
+        out.a = static_cast<Uint8>(hexToByte(hex[3]) * 0x11);
+        break;
+      case 6:
+        // rrggbb -> rr,gg,bb and alpha=FF
+        out.r = parsePair(0);
+        out.g = parsePair(2);
+        out.b = parsePair(4);
+        out.a = 255;
+        break;
+      case 8:
+        // rrggbbaa
+        out.r = parsePair(0);
+        out.g = parsePair(2);
+        out.b = parsePair(4);
+        out.a = parsePair(6);
+        break;
+      default:
+        // leave default black
+        break;
+    }
+    return out;
 }
+
+
+
+// DEBUG ENUM --------------------------------------------------------------------
+enum DebugLevels {
+    All,
+    Warnings,
+    Errors,
+    Silent
+};
+
+
+// TM ENUM --------------------------------------------------------------------
+enum TM_Functions {
+    LOAD_TEXTURE,
+    CREATE_TEXT_TEXTURE,
+    COPY_TEXTURE,
+    RESIZE_TEXTURE,
+    EXPORT_TEXTURE,
+    TO_TEXTURE,
+    CONVERT_TO_TEX,
+    CONVERT_TEX_TO
+};
+
+// ASYNC ----------------------------------------------------------------------
+struct asyncData {
+    bool                     done = false;
+    TM_Functions             pendingFunction;
+    std::vector<std::any>    params;  // the arguments
+    std::any                 result;  // the return value
+};
+using AsyncDataPtr = std::shared_ptr<asyncData>;
 
 
 // OVERLOAD
@@ -288,5 +406,18 @@ inline SDL_Rect operator*(const SDL_Rect& rect, float scale) {
 }
 
 #endif
+
+
+/*
+TODO:
+
+Input controll using arrows
+Input Ender button controll
+Input mouse controll
+Input shortcuts, ctrl+c, ctrl+v, ctrl+x, ctrl+a
+
+Sys Keyboard Keypress controll
+
+*/
 
 // Creator: @AndrijaRD

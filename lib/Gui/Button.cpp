@@ -2,24 +2,7 @@
 #include "../System/Sys.h"
 
 
-
-/** GUI Button
- * 
- * This function renders a button. It supports all style pushs.
- * 
- * @param title Button text, which is dinamicly calculated to fit into the button and to be centered
- * @param dRect It represents position and size of the button, must be possitive, all of the value
- * @param buttonColor Background color of the button
- * @param textColor Color of the text inside the Button
- * 
- * @returns It returns the state of the button: 
- *  `GUI_CURSOR_CLICKED`, 
- *  `GUI_CURSOR_HOVERING`,
- *  `GUI_CUROSR_DRAGGING`,
- *  `GUI_CURSOR_OUTSIDE`
- * 
- */
-int GUI::Button(
+GuiCursorState GUI::Button(
     const string& title, 
     const SDL_Rect& dRect,
     const SDL_Color& buttonColor,
@@ -41,14 +24,36 @@ int GUI::Button(
     BorderRadiusRect borderRadius = pBorderRadius;
     pBorderRadius = {0, 0, 0, 0};
 
+    paddingRect padding = GUI::pPaddingRect;
+    pPaddingRect = {0, 0, 0, 0};
+
 
 
     // CHECK VALIDITY OF dRect -------------------------------------------
-    if(dRect.w < 1 || dRect.h < 1) return GUI_CURSOR_OUTSIDE;
+    if(dRect.w < 1 || dRect.h < 1) return CURSOR_OUTSIDE;
 
     // FIND fontSize ---------------------------------------------------------------
     if(fontSize == -1){
-        if(calcTextWidth(title, dRect.h) > dRect.w) fontSize = calcTextHeight(title, dRect.w);
+        // Valid width is width that text can occupy, buttons width minus the left and right padding
+        int validWidth = dRect.w - (padding.left + padding.right);
+
+        int validHeight = dRect.h - (padding.top + padding.bottom);
+
+        // If valid width is too small discard it, just use full button width
+        if (validWidth < 10) {
+            validWidth = dRect.w;
+            padding.left = 0;
+            padding.right = 0;
+        }
+
+        if (validHeight < 10) {
+            validHeight = dRect.h;
+            padding.top = 0;
+            padding.bottom = 0;
+        }
+
+        // If width that text would occupy with max font size would spil out of the validWidth, calculate the right fontSize
+        if(calcTextWidth(title, validHeight) > validWidth) fontSize = calcTextHeight(title, validWidth);
         else fontSize = dRect.h;
     }
 
@@ -57,13 +62,13 @@ int GUI::Button(
     // FIND BUTTON TEXTURE
     LoadedText* textPointer = nullptr;
 
-    auto it = loadedTexts.find(getTextID(title, fontSize, textColor));
+    auto it = loadedTexts.find(getTextId(title, fontSize, textColor));
     if (it != loadedTexts.end()) {
         // Save the pointer to that LoadedText item
         textPointer = &it->second;
         
         // Update with the current frame
-        textPointer->frame = Sys::getCurrentFrame();
+        textPointer->lastUsedFrame = Sys::getCurrentFrame();
     } else {
         // Create new Text Texture
         textPointer = loadNewText(title, fontSize, textColor);
@@ -81,11 +86,6 @@ int GUI::Button(
     
 
 
-    // Add a 5px padding on the sides, unless the total 
-    // width or height of the button is less then 10x10
-    int padding = 5;
-    if(dRect.w < 10 || dRect.h < 10) padding = 0;
-
     // TEXT DRECT ------------------------------------------------------------------
     SDL_Rect text_dRect;
 
@@ -93,42 +93,41 @@ int GUI::Button(
     text_dRect.h = fontSize;
 
     // DRECT WIDTH -----------------------------------------------------------------
-    text_dRect.w = text_dRect.h * (float)textPointer->td.width / textPointer->td.height;
+    text_dRect.w = text_dRect.h * (float)textPointer->td.getWidth() / textPointer->td.getHeight();
 
     // DRECT X POS
     if(textAlignX == GUI_ALIGN_LEFT){
-        text_dRect.x = dRect.x + padding;
+        text_dRect.x = dRect.x + padding.left;
     } else if(textAlignX == GUI_ALIGN_CENTER){
         text_dRect.x = dRect.x + dRect.w/2 - text_dRect.w/2;
     } else if(textAlignX == GUI_ALIGN_RIGHT){
-        text_dRect.x = dRect.x + dRect.w - padding - text_dRect.w;
+        text_dRect.x = dRect.x + dRect.w - padding.right - text_dRect.w;
     }
 
     // DRECT Y POS
     if(textAlignY == GUI_ALIGN_TOP){
-        text_dRect.y = dRect.y + padding;
+        text_dRect.y = dRect.y + padding.top;
     } else if(textAlignY == GUI_ALIGN_CENTER) {
         text_dRect.y = dRect.y + dRect.h/2 - text_dRect.h/2;
     } else if(textAlignY == GUI_ALIGN_BOTTOM) {
-        text_dRect.y = dRect.y + dRect.h - padding - text_dRect.h;
+        text_dRect.y = dRect.y + dRect.h - padding.bottom - text_dRect.h;
     }
 
 
     // Now render the text
-    int err = TM::renderTexture(textPointer->td, text_dRect);
-    CHECK_ERROR(err);
+    GUI::Image(textPointer->td, text_dRect);
 
     if(Sys::Mouse::isHovering(dRect)){
         if(Sys::Mouse::isClicked()){
-            return GUI_CURSOR_CLICKED;
+            return CURSOR_CLICKED;
         }
         if(Sys::Mouse::isDown()){
-            return GUI_CURSOR_DRAGGING;
+            return CURSOR_DRAGGING;
         }
-        return GUI_CURSOR_HOVERING;
+        return CURSOR_HOVERING;
     }
 
-    return GUI_CURSOR_OUTSIDE;
+    return CURSOR_OUTSIDE;
 }
 
 

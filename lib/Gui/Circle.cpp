@@ -7,7 +7,7 @@ void GUI::Circle(
     const SDL_Color& color, 
     const int& thickness
 ) {
-    SDL_SetRenderDrawColor(Sys::renderer, color.r, color.g, color.b, color.a);
+    TM::_SetRenderDrawColor(Sys::renderer, color.r, color.g, color.b, color.a);
 
     // Choose an appropriate number of segments. More segments produce a smoother circle.
     // Here we use at least 32 segments, or more if the circle is large.
@@ -45,7 +45,7 @@ void GUI::Circle(
             indices.push_back(i + 1);
         }
 
-        SDL_RenderGeometry(Sys::renderer, nullptr,
+        TM::_RenderGeometry(Sys::renderer, nullptr,
                            vertices.data(), static_cast<int>(vertices.size()),
                            indices.data(), static_cast<int>(indices.size()));
     }
@@ -96,7 +96,7 @@ void GUI::Circle(
             indices.push_back(base + 3);
         }
 
-        SDL_RenderGeometry(Sys::renderer, nullptr,
+        TM::_RenderGeometry(Sys::renderer, nullptr,
                            vertices.data(), static_cast<int>(vertices.size()),
                            indices.data(), static_cast<int>(indices.size()));
     }

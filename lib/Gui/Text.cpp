@@ -2,29 +2,18 @@
 #include "../System/Sys.h"
 
 
-
-/** Text
- * 
- * Draws a optimized verion of text on the screen.
- * It doesnt respond to any push styles since all of them
- * can be controlled trough dRect param.
- * 
- * @param title Text to be rendered.
- * @param dRect position and size of the text, one dimension can be left as -1 for
- *              dynamic calculation, eg. set height to font size and width as -1
- *              and after the render you can check dRect that was passed and the
- *              width will be calculated and dRect will be updated, replacing -1
- * @param color The color of the text
- * 
- */
-void GUI::TextBox(const string& title, SDL_Rect& dRect, const SDL_Color& color){
+void GUI::Text(
+    const string& title, 
+    SDL_Rect& dRect, 
+    const SDL_Color& color
+) {
     if(dRect.w < 1 && dRect.h < 1) return;
 
     if(dRect.h == -1) dRect.h = calcTextHeight(title, dRect.w);
     if(dRect.w == -1) dRect.w = calcTextWidth(title, dRect.h);
 
     LoadedText* textPointer = nullptr;
-    string id = getTextID(title, dRect.h, color);
+    string id = getTextId(title, dRect.h, color);
 
     auto it = loadedTexts.find(id);
     if (it != loadedTexts.end()) {
@@ -32,35 +21,22 @@ void GUI::TextBox(const string& title, SDL_Rect& dRect, const SDL_Color& color){
         textPointer = &it->second;
         
         // Update with the current frame
-        textPointer->frame = Sys::getCurrentFrame();
+        textPointer->lastUsedFrame = Sys::getCurrentFrame();
     } else {
+
         textPointer = loadNewText(title, dRect.h, color);
     }
 
     // Render the texture
-    TM::renderTexture(textPointer->td, dRect);
+    GUI::Image(textPointer->td, dRect);
 }
 
 
-
-
-/** Text Dynamic
- * 
- * Draws a text that is not cached anywhere, the texture is created,
- * rendered and then destroyed, its not optimal, but it shold be used for 
- * highly changable texts, like the ones that change every frame so there
- * is no point is storing them as they will never be reused unline regular
- * GUI::Text which is optimised so it stores all texture in case of re-use.
- * 
- * @param title Text to be rendered.
- * @param dRect position and size of the text, one dimension can be left as -1 for
- *              dynamic calculation, eg. set height to font size and width as -1
- *              and after the render you can check dRect that was passed and the
- *              width will be calculated and dRect will be updated, replacing -1
- * @param color The color of the text
- * 
- */
-void GUI::TextDynamic(const string& title, SDL_Rect& dRect, const SDL_Color& color){
+void GUI::TextDynamic(
+    const string& title, 
+    SDL_Rect& dRect, 
+    const SDL_Color& color
+) {
     if(dRect.w < 1 && dRect.h < 1) return;
 
     if(dRect.h == -1) dRect.h = calcTextHeight(title, dRect.w);
@@ -72,20 +48,17 @@ void GUI::TextDynamic(const string& title, SDL_Rect& dRect, const SDL_Color& col
     CHECK_ERROR(err);
 
     // Render the texture
-    TM::renderTexture(td, dRect);
-
-    // Free Texture Data
-    TM::freeTexture(td); 
+    GUI::Image(td, dRect);
 }
 
 
 int GUI::calcTextWidth(
     const string& text,
-    const int& textHeight
-){
+    int textHeight
+) {
     // Ensure that the font is valid.
     if (Sys::fontPath == "") {
-        CHECK_ERROR(SYS_FONT_NOT_INITED);
+        Sys::printf_err(SYS_FONT_NOT_INITED);
         exit(EXIT_FAILURE);
     }
 
@@ -106,11 +79,11 @@ int GUI::calcTextWidth(
 
 int GUI::calcTextHeight(
     const string& text,
-    const int& textWidth
-){
+    int textWidth
+) {
     // Ensure that the font is valid.
     if (Sys::fontPath == "") {
-        CHECK_ERROR(SYS_FONT_NOT_INITED);
+        Sys::printf_err(SYS_FONT_NOT_INITED);
         exit(EXIT_FAILURE);
     }
 
@@ -133,52 +106,62 @@ int GUI::calcTextHeight(
 }
 
 
-
-void GUI::clearLoadedTexts(){
-    for(auto text : loadedTexts){
-        TM::freeTexture(text.second.td);
-    }
-    loadedTexts.clear();
-}
-
-string GUI::getTextID(string title, int fontSize, SDL_Color color){
+string GUI::getTextId(
+    const string& title, 
+    int fontSize, 
+    SDL_Color color
+) {
     // id = "HelloWorld_24#ffffffff"
     // id = text_fontSize#color
-    return title + "_" + to_string(fontSize) + color2hex(color);
+    return title + "_" + to_string(fontSize) + sdlColor2hex(color);
 }
 
 
-/** Load New Text
- * 
- * INTERNAL FUNCTION
- * 
- * Funtion for inserting a new text texture into map.
- * It also calles removeOldest if map is full.
- */
 GUI::LoadedText* GUI::loadNewText(
-    const string& title, 
-    const int& fontSize, 
-    const SDL_Color& color
-){
-    // If there is more loaded Textures then allowed, remove the oldest
-    if((int)loadedTexts.size() >= max_num_of_loaded_textures){
-        removeOldest();
+    string title,
+    int fontSize,
+    SDL_Color color
+) {
+    // If there are more elements then allowed remove the oldest
+    if((int)loadedTexts.size() >= MAX_LOADED_TEXTS && MAX_LOADED_TEXTS > 0){
+        removeOldestText();
     }
 
-    // Create the new LoadedText item
+    // FIll the data
     LoadedText newText;
-    newText.color = color;
-    newText.fontSize = fontSize;
-    newText.frame = Sys::getCurrentFrame();
     newText.title = title;
+    newText.fontSize = fontSize;
+    newText.color = color;
+    newText.lastUsedFrame = Sys::getCurrentFrame();
 
     // Create the texture
-    int err = TM::createTextTexture(newText.td, newText.title, fontSize, newText.color);
+    int err = TM::createTextTexture(newText.td, newText.title, newText.fontSize, newText.color);
     CHECK_ERROR(err);
 
-    // Insert the item and return the pointer to it
+    // Insert the item
     loadedTexts.insert({newText.getId(), newText});
+
+    // Return the pointer to the item
     return &(loadedTexts.at(newText.getId()));
+}
+
+
+void GUI::removeOldestText(){
+    if (loadedTexts.empty()) return;
+
+    // Find the map‐element whose LoadedText::lastUsedFrame is smallest
+    auto it = std::min_element(
+        loadedTexts.begin(), 
+        loadedTexts.end(),
+        [](auto const &a, auto const &b) {
+            return a.second.lastUsedFrame < b.second.lastUsedFrame;
+        }
+    );
+
+    // Erase it
+    if (it != loadedTexts.end()) {
+        loadedTexts.erase(it);
+    }
 }
 
 
