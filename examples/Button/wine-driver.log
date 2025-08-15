@@ -1,0 +1,509 @@
+0050:trace:x11drv:init_pixmap_formats depth 1, bpp 1, pad 32
+0050:trace:x11drv:init_pixmap_formats depth 4, bpp 8, pad 32
+0050:trace:x11drv:init_pixmap_formats depth 8, bpp 8, pad 32
+0050:trace:x11drv:init_pixmap_formats depth 15, bpp 16, pad 32
+0050:trace:x11drv:init_pixmap_formats depth 16, bpp 16, pad 32
+0050:trace:x11drv:init_pixmap_formats depth 24, bpp 32, pad 32
+0050:trace:x11drv:init_pixmap_formats depth 32, bpp 32, pad 32
+0050:trace:x11drv:init_visuals default visual 40 class 4 argb 70
+0050:trace:x11drv:get_work_area work_rect:(0,32)-(1920,1080).
+0050:trace:x11drv:xinerama_init monitor 0x0: (0,0)-(1920,1080) work (0,32)-(1920,1080) (primary)
+0050:trace:x11drv:X11DRV_DisplayDevices_SetHandler Display device functions are now handled by: Xinerama
+0050:trace:x11drv:X11DRV_Settings_SetHandler Display settings are now handled by: NoRes.
+0050:trace:x11drv:X11DRV_Settings_SetHandler Display settings are now handled by: XF86VidMode.
+0050:trace:x11drv:X11DRV_Settings_SetHandler Display settings are now handled by: XRandR 1.0.
+0050:trace:x11drv:X11DRV_DisplayDevices_SetHandler Display device functions are now handled by: XRandR 1.4
+0050:trace:x11drv:X11DRV_Settings_SetHandler Display settings are now handled by: XRandR 1.4.
+0050:trace:x11drv:X11DRV_XComposite_Init XComposite is up and running error_base = 0
+0088:fixme:seh:WerSetFlags (2) stub
+0088:fixme:heap:RtlSetHeapInformation HEAP_INFORMATION_CLASS 1 not implemented!
+0050:trace:x11drv:X11DRV_UpdateDisplayDevices via "XRandR 1.4"
+0050:trace:x11drv:X11DRV_UpdateDisplayDevices GPU count: 1
+0050:trace:x11drv:X11DRV_UpdateDisplayDevices GPU: 0 "Wine GPU", adapter count: 1
+0050:trace:x11drv:get_work_area work_rect:(0,32)-(1920,1080).
+0050:trace:x11drv:X11DRV_UpdateDisplayDevices adapter: 0x21, monitor count: 1
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10020, swp_flags 0x14, shaped 0, rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) }
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10020, swp_flags 0x10, shaped 0, rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) }
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10028, swp_flags 0x14, shaped 0, rects { window (0,0)-(100,100), client (0,0)-(100,100), visible (0,0)-(100,100) }
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10028, swp_flags 0x10, shaped 0, rects { window (0,0)-(100,100), client (0,0)-(100,100), visible (0,0)-(100,100) }
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10020, swp_flags 0x104a, shaped 0, rects { window (0,0)-(1920,1080), client (0,0)-(1920,1080), visible (0,0)-(1920,1080) }
+0050:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x3010048 drawable 350 dc_rect (0,0)-(1920,1080)
+0050:trace:x11drv:set_net_active_window requesting _NET_ACTIVE_WINDOW 0x10020/350 serial 63
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1002e, swp_flags 0x14, shaped 0, rects { window (0,0)-(140,34), client (0,0)-(140,34), visible (0,0)-(140,34) }
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1002e, swp_flags 0x10, shaped 0, rects { window (0,0)-(140,34), client (3,29)-(137,31), visible (0,0)-(140,34) }
+00a8:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20030, swp_flags 0x14, shaped 0, rects { window (0,0)-(140,34), client (0,0)-(140,34), visible (0,0)-(140,34) }
+00a4:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10038, swp_flags 0x14, shaped 0, rects { window (0,0)-(140,34), client (0,0)-(140,34), visible (0,0)-(140,34) }
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20036, swp_flags 0x14, shaped 0, rects { window (0,32)-(166,84), client (0,32)-(166,84), visible (0,32)-(166,84) }
+0050:trace:x11drv:set_mwm_hints 0x20036 setting mwm hints to 0,24 (style 4c80000 exstyle 100)
+0050:trace:x11drv:X11DRV_create_win_data win 0x20036/2000002 window (0,32)-(166,84) whole (0,32)-(166,84) client (0,32)-(166,84)
+00a8:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20030, swp_flags 0x10, shaped 0, rects { window (0,0)-(140,34), client (3,29)-(137,31), visible (0,0)-(140,34) }
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x20036/2000002 new_rects { window (0,32)-(166,84), client (0,32)-(166,84), visible (0,32)-(166,84) } style 04c80000 flags 0000003c
+0050:trace:x11drv:set_mwm_hints 0x20036 setting mwm hints to 0,24 (style 4c80000 exstyle 100)
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10042, swp_flags 0x14, shaped 0, rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) }
+0050:trace:x11drv:set_mwm_hints 0x10042 setting mwm hints to 0,4 (style 8c000000 exstyle 0)
+0050:trace:x11drv:X11DRV_create_win_data win 0x10042/2000003 window (0,0)-(1,1) whole (0,0)-(1,1) client (0,0)-(1,1)
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x10042/2000003 new_rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) } style 8c000000 flags 0000003c
+0050:trace:x11drv:set_mwm_hints 0x10042 setting mwm hints to 0,4 (style 8c000000 exstyle 0)
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10042, swp_flags 0x10, shaped 0, rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) }
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x10042/2000003 new_rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) } style 8c000000 flags 00000018
+0050:trace:x11drv:set_mwm_hints 0x10042 setting mwm hints to 0,4 (style 8c000000 exstyle 0)
+0050:trace:x11drv:window_set_config window 0x10042/2000003, requesting config (0,0)-(1,1) mask 0x40 above 1, serial 111
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20036, swp_flags 0x10, shaped 0, rects { window (0,32)-(166,84), client (3,61)-(163,81), visible (0,32)-(166,84) }
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x20036/2000002 new_rects { window (0,32)-(166,84), client (3,61)-(163,81), visible (3,61)-(163,81) } style 04c80000 flags 00000018
+0050:trace:x11drv:set_mwm_hints 0x20036 setting mwm hints to 1a,24 (style 4c80000 exstyle 100)
+0050:trace:x11drv:window_set_config window 0x20036/2000002, requesting config (3,61)-(163,81) mask 0x4f above 1, serial 115
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10044, swp_flags 0x14, shaped 0, rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) }
+0050:trace:x11drv:set_mwm_hints 0x10044 setting mwm hints to 0,24 (style 84000000 exstyle 0)
+0050:trace:x11drv:X11DRV_create_win_data win 0x10044/2000004 window (0,0)-(0,0) whole (0,0)-(0,0) client (0,0)-(0,0)
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x10044/2000004 new_rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) } style 84000000 flags 0000003c
+0050:trace:x11drv:set_mwm_hints 0x10044 setting mwm hints to 0,24 (style 84000000 exstyle 0)
+0050:trace:x11drv:window_set_config window 0x10044/2000004, requesting config (0,0)-(0,0) mask 0xc above 0, serial 139
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10044, swp_flags 0x10, shaped 0, rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) }
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x10044/2000004 new_rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) } style 84000000 flags 00000018
+0050:trace:x11drv:set_mwm_hints 0x10044 setting mwm hints to 0,24 (style 84000000 exstyle 0)
+0050:trace:x11drv:window_set_config window 0x10044/2000004, requesting config (0,0)-(0,0) mask 0x40 above 1, serial 145
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10046, swp_flags 0x14, shaped 0, rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) }
+0050:trace:x11drv:set_mwm_hints 0x10046 setting mwm hints to 0,24 (style 84000000 exstyle 0)
+0050:trace:x11drv:X11DRV_create_win_data win 0x10046/2000005 window (0,0)-(0,0) whole (0,0)-(0,0) client (0,0)-(0,0)
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x10046/2000005 new_rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) } style 84000000 flags 0000003c
+0050:trace:x11drv:set_mwm_hints 0x10046 setting mwm hints to 0,24 (style 84000000 exstyle 0)
+0050:trace:x11drv:window_set_config window 0x10046/2000005, requesting config (0,0)-(0,0) mask 0xc above 0, serial 167
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10046, swp_flags 0x10, shaped 0, rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) }
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x10046/2000005 new_rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) } style 84000000 flags 00000018
+0050:trace:x11drv:set_mwm_hints 0x10046 setting mwm hints to 0,24 (style 84000000 exstyle 0)
+0050:trace:x11drv:window_set_config window 0x10046/2000005, requesting config (0,0)-(0,0) mask 0x40 above 1, serial 173
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10048, swp_flags 0x14, shaped 0, rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) }
+0050:trace:x11drv:set_mwm_hints 0x10048 setting mwm hints to 0,24 (style 84000000 exstyle 0)
+0050:trace:x11drv:X11DRV_create_win_data win 0x10048/2000006 window (0,0)-(0,0) whole (0,0)-(0,0) client (0,0)-(0,0)
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x10048/2000006 new_rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) } style 84000000 flags 0000003c
+0050:trace:x11drv:set_mwm_hints 0x10048 setting mwm hints to 0,24 (style 84000000 exstyle 0)
+0050:trace:x11drv:window_set_config window 0x10048/2000006, requesting config (0,0)-(0,0) mask 0xc above 0, serial 195
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10048, swp_flags 0x10, shaped 0, rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) }
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x10048/2000006 new_rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) } style 84000000 flags 00000018
+0050:trace:x11drv:set_mwm_hints 0x10048 setting mwm hints to 0,24 (style 84000000 exstyle 0)
+0050:trace:x11drv:window_set_config window 0x10048/2000006, requesting config (0,0)-(0,0) mask 0x40 above 1, serial 201
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1004a, swp_flags 0x14, shaped 0, rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) }
+0050:trace:x11drv:set_mwm_hints 0x1004a setting mwm hints to 0,24 (style 84000000 exstyle 0)
+0050:trace:x11drv:X11DRV_create_win_data win 0x1004a/2000007 window (0,0)-(0,0) whole (0,0)-(0,0) client (0,0)-(0,0)
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x1004a/2000007 new_rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) } style 84000000 flags 0000003c
+0050:trace:x11drv:set_mwm_hints 0x1004a setting mwm hints to 0,24 (style 84000000 exstyle 0)
+0050:trace:x11drv:window_set_config window 0x1004a/2000007, requesting config (0,0)-(0,0) mask 0xc above 0, serial 223
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1004a, swp_flags 0x10, shaped 0, rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) }
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x1004a/2000007 new_rects { window (0,0)-(0,0), client (0,0)-(0,0), visible (0,0)-(0,0) } style 84000000 flags 00000018
+0050:trace:x11drv:set_mwm_hints 0x1004a setting mwm hints to 0,24 (style 84000000 exstyle 0)
+0050:trace:x11drv:window_set_config window 0x1004a/2000007, requesting config (0,0)-(0,0) mask 0x40 above 1, serial 229
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1004c, swp_flags 0x14, shaped 0, rects { window (0,0)-(140,34), client (0,0)-(140,34), visible (0,0)-(140,34) }
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1004c, swp_flags 0x10, shaped 0, rects { window (0,0)-(140,34), client (3,29)-(137,31), visible (0,0)-(140,34) }
+00a4:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10038, swp_flags 0x10, shaped 0, rects { window (0,0)-(140,34), client (3,29)-(137,31), visible (0,0)-(140,34) }
+00cc:fixme:ntdll:NtQuerySystemInformation info_class SYSTEM_PERFORMANCE_INFORMATION
+00cc:fixme:seh:WerSetFlags (2) stub
+00cc:fixme:heap:RtlSetHeapInformation HEAP_INFORMATION_CLASS 1 not implemented!
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10020, swp_flags 0x181b, shaped 0, rects { window (0,0)-(1920,1080), client (0,0)-(1920,1080), visible (0,0)-(1920,1080) }
+0050:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x18010047 drawable 350 dc_rect (0,0)-(1920,1080)
+0050:trace:x11drv:handle_state_change window 0x20036/2000002 config (3,61)-(163,81)/116, expected (3,61)-(163,81)/115
+0034:trace:x11drv:init_pixmap_formats depth 1, bpp 1, pad 32
+0034:trace:x11drv:init_pixmap_formats depth 4, bpp 8, pad 32
+0034:trace:x11drv:init_pixmap_formats depth 8, bpp 8, pad 32
+0034:trace:x11drv:init_pixmap_formats depth 15, bpp 16, pad 32
+0034:trace:x11drv:init_pixmap_formats depth 16, bpp 16, pad 32
+0034:trace:x11drv:init_pixmap_formats depth 24, bpp 32, pad 32
+0034:trace:x11drv:init_pixmap_formats depth 32, bpp 32, pad 32
+0034:trace:x11drv:init_visuals default visual 40 class 4 argb 70
+0034:trace:x11drv:get_work_area work_rect:(0,32)-(1920,1080).
+0034:trace:x11drv:xinerama_init monitor 0x0: (0,0)-(1920,1080) work (0,32)-(1920,1080) (primary)
+0034:trace:x11drv:X11DRV_DisplayDevices_SetHandler Display device functions are now handled by: Xinerama
+0034:trace:x11drv:X11DRV_Settings_SetHandler Display settings are now handled by: NoRes.
+0034:trace:x11drv:X11DRV_Settings_SetHandler Display settings are now handled by: XF86VidMode.
+0034:trace:x11drv:X11DRV_Settings_SetHandler Display settings are now handled by: XRandR 1.0.
+0034:trace:x11drv:X11DRV_DisplayDevices_SetHandler Display device functions are now handled by: XRandR 1.4
+0034:trace:x11drv:X11DRV_Settings_SetHandler Display settings are now handled by: XRandR 1.4.
+0034:trace:x11drv:X11DRV_XComposite_Init XComposite is up and running error_base = 0
+0034:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10052, swp_flags 0x14, shaped 0, rects { window (0,0)-(140,34), client (0,0)-(140,34), visible (0,0)-(140,34) }
+0034:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10052, swp_flags 0x10, shaped 0, rects { window (0,0)-(140,34), client (3,29)-(137,31), visible (0,0)-(140,34) }
+002c:fixme:ver:GetCurrentPackageId (00007FFFFE2FFEB0 0000000000000000): stub
+0154:trace:x11drv:init_pixmap_formats depth 1, bpp 1, pad 32
+0154:trace:x11drv:init_pixmap_formats depth 4, bpp 8, pad 32
+0154:trace:x11drv:init_pixmap_formats depth 8, bpp 8, pad 32
+0154:trace:x11drv:init_pixmap_formats depth 15, bpp 16, pad 32
+0154:trace:x11drv:init_pixmap_formats depth 16, bpp 16, pad 32
+0154:trace:x11drv:init_pixmap_formats depth 24, bpp 32, pad 32
+0154:trace:x11drv:init_pixmap_formats depth 32, bpp 32, pad 32
+0154:trace:x11drv:init_visuals default visual 40 class 4 argb 70
+0154:trace:x11drv:get_work_area work_rect:(0,32)-(1920,1080).
+0154:trace:x11drv:xinerama_init monitor 0x0: (0,0)-(1920,1080) work (0,32)-(1920,1080) (primary)
+0154:trace:x11drv:X11DRV_DisplayDevices_SetHandler Display device functions are now handled by: Xinerama
+0154:trace:x11drv:X11DRV_Settings_SetHandler Display settings are now handled by: NoRes.
+0154:trace:x11drv:X11DRV_Settings_SetHandler Display settings are now handled by: XF86VidMode.
+0154:trace:x11drv:X11DRV_Settings_SetHandler Display settings are now handled by: XRandR 1.0.
+0154:trace:x11drv:X11DRV_DisplayDevices_SetHandler Display device functions are now handled by: XRandR 1.4
+0154:trace:x11drv:X11DRV_Settings_SetHandler Display settings are now handled by: XRandR 1.4.
+0154:trace:x11drv:X11DRV_XComposite_Init XComposite is up and running error_base = 0
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10066, swp_flags 0x14, shaped 0, rects { window (0,0)-(140,34), client (0,0)-(140,34), visible (0,0)-(140,34) }
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10066, swp_flags 0x10, shaped 0, rects { window (0,0)-(140,34), client (3,29)-(137,31), visible (0,0)-(140,34) }
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x1c010042 drawable 350 dc_rect (0,0)-(1920,1080)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x1c010042 drawable 350 dc_rect (0,0)-(1920,1080)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1006a, swp_flags 0x14, shaped 0, rects { window (0,32)-(336,292), client (0,32)-(336,292), visible (0,32)-(336,292) }
+0034:fixme:ver:GetCurrentPackageId (00007FFFFE2FFEB0 0000000000000000): stub
+0154:trace:x11drv:set_mwm_hints 0x1006a setting mwm hints to 0,24 (style 84c820c4 exstyle 10101)
+0154:trace:x11drv:X11DRV_create_win_data win 0x1006a/2800001 window (0,32)-(336,292) whole (0,32)-(336,292) client (0,32)-(336,292)
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x1006a/2800001 new_rects { window (0,32)-(336,292), client (0,32)-(336,292), visible (0,32)-(336,292) } style 84c820c4 flags 0000003c
+0154:trace:x11drv:set_mwm_hints 0x1006a setting mwm hints to 0,24 (style 84c820c4 exstyle 10101)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20054, swp_flags 0x14, shaped 0, rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) }
+0154:trace:x11drv:set_mwm_hints 0x20054 setting mwm hints to 0,4 (style 8c000000 exstyle 0)
+0154:trace:x11drv:X11DRV_create_win_data win 0x20054/2800002 window (0,0)-(1,1) whole (0,0)-(1,1) client (0,0)-(1,1)
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x20054/2800002 new_rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) } style 8c000000 flags 0000003c
+0154:trace:x11drv:set_mwm_hints 0x20054 setting mwm hints to 0,4 (style 8c000000 exstyle 0)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20054, swp_flags 0x10, shaped 0, rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x20054/2800002 new_rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) } style 8c000000 flags 00000018
+0154:trace:x11drv:set_mwm_hints 0x20054 setting mwm hints to 0,4 (style 8c000000 exstyle 0)
+0154:trace:x11drv:window_set_config window 0x20054/2800002, requesting config (0,0)-(1,1) mask 0x40 above 1, serial 108
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1006a, swp_flags 0x10, shaped 0, rects { window (0,32)-(336,292), client (3,61)-(333,289), visible (0,32)-(336,292) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x1006a/2800001 new_rects { window (0,32)-(336,292), client (3,61)-(333,289), visible (3,61)-(333,289) } style 84c820c4 flags 00000018
+0154:trace:x11drv:set_mwm_hints 0x1006a setting mwm hints to 1a,24 (style 84c820c4 exstyle 10101)
+0154:trace:x11drv:window_set_config window 0x1006a/2800001, requesting config (3,61)-(333,289) mask 0x4f above 1, serial 112
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20050, swp_flags 0x14, shaped 0, rects { window (6,198)-(81,221), client (6,198)-(81,221), visible (6,198)-(81,221) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x20050/0 new_rects { window (6,198)-(81,221), client (6,198)-(81,221), visible (6,198)-(81,221) } style 40030001 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20050, swp_flags 0x10, shaped 0, rects { window (6,198)-(81,221), client (6,198)-(81,221), visible (6,198)-(81,221) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x20050/0 new_rects { window (6,198)-(81,221), client (6,198)-(81,221), visible (6,198)-(81,221) } style 40030001 flags 00000010
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20050, swp_flags 0x181f, shaped 0, rects { window (6,198)-(81,221), client (6,198)-(81,221), visible (6,198)-(81,221) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x20050/0 new_rects { window (6,198)-(81,221), client (6,198)-(81,221), visible (6,198)-(81,221) } style 50030001 flags 0000181f
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x2004e, swp_flags 0x14, shaped 0, rects { window (87,198)-(162,221), client (87,198)-(162,221), visible (87,198)-(162,221) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x2004e/0 new_rects { window (87,198)-(162,221), client (87,198)-(162,221), visible (87,198)-(162,221) } style 40010000 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x2004e, swp_flags 0x10, shaped 0, rects { window (87,198)-(162,221), client (87,198)-(162,221), visible (87,198)-(162,221) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x2004e/0 new_rects { window (87,198)-(162,221), client (87,198)-(162,221), visible (87,198)-(162,221) } style 40010000 flags 00000010
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x2004e, swp_flags 0x181f, shaped 0, rects { window (87,198)-(162,221), client (87,198)-(162,221), visible (87,198)-(162,221) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x2004e/0 new_rects { window (87,198)-(162,221), client (87,198)-(162,221), visible (87,198)-(162,221) } style 50010000 flags 0000181f
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20052, swp_flags 0x14, shaped 0, rects { window (168,198)-(243,221), client (168,198)-(243,221), visible (168,198)-(243,221) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x20052/0 new_rects { window (168,198)-(243,221), client (168,198)-(243,221), visible (168,198)-(243,221) } style 48010000 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20052, swp_flags 0x10, shaped 0, rects { window (168,198)-(243,221), client (168,198)-(243,221), visible (168,198)-(243,221) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x20052/0 new_rects { window (168,198)-(243,221), client (168,198)-(243,221), visible (168,198)-(243,221) } style 48010000 flags 00000010
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20052, swp_flags 0x181f, shaped 0, rects { window (168,198)-(243,221), client (168,198)-(243,221), visible (168,198)-(243,221) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x20052/0 new_rects { window (168,198)-(243,221), client (168,198)-(243,221), visible (168,198)-(243,221) } style 58010000 flags 0000181f
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10070, swp_flags 0x14, shaped 0, rects { window (249,198)-(324,221), client (249,198)-(324,221), visible (249,198)-(324,221) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10070/0 new_rects { window (249,198)-(324,221), client (249,198)-(324,221), visible (249,198)-(324,221) } style 40030000 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10070, swp_flags 0x10, shaped 0, rects { window (249,198)-(324,221), client (249,198)-(324,221), visible (249,198)-(324,221) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10070/0 new_rects { window (249,198)-(324,221), client (249,198)-(324,221), visible (249,198)-(324,221) } style 40030000 flags 00000010
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10070, swp_flags 0x181f, shaped 0, rects { window (249,198)-(324,221), client (249,198)-(324,221), visible (249,198)-(324,221) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10070/0 new_rects { window (249,198)-(324,221), client (249,198)-(324,221), visible (249,198)-(324,221) } style 50030000 flags 0000181f
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10072, swp_flags 0x14, shaped 0, rects { window (6,7)-(324,192), client (6,7)-(324,192), visible (6,7)-(324,192) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10072/0 new_rects { window (6,7)-(324,192), client (6,7)-(324,192), visible (6,7)-(324,192) } style 44030200 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10072, swp_flags 0x10, shaped 0, rects { window (6,7)-(324,192), client (6,7)-(324,192), visible (6,7)-(324,192) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10072/0 new_rects { window (6,7)-(324,192), client (6,7)-(324,192), visible (6,7)-(324,192) } style 44030200 flags 00000010
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (6,7)-(324,192)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10072, swp_flags 0x181f, shaped 0, rects { window (6,7)-(324,192), client (6,7)-(324,192), visible (6,7)-(324,192) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10072/0 new_rects { window (6,7)-(324,192), client (6,7)-(324,192), visible (6,7)-(324,192) } style 54030200 flags 0000181f
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (6,7)-(324,192)
+0154:trace:x11drv:set_mwm_hints 0x1006a setting mwm hints to 1a,24 (style 84c820c4 exstyle 10101)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10072, swp_flags 0x101e, shaped 0, rects { window (6,7)-(404,409), client (6,7)-(404,409), visible (6,7)-(404,409) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10072/0 new_rects { window (6,7)-(404,409), client (6,7)-(404,409), visible (6,7)-(404,409) } style 54030200 flags 0000101e
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (6,7)-(404,409)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1006a, swp_flags 0x101e, shaped 0, rects { window (0,32)-(416,510), client (3,61)-(413,507), visible (0,32)-(416,510) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x1006a/2800001 new_rects { window (0,32)-(416,510), client (3,61)-(413,507), visible (3,61)-(413,507) } style 84c820c4 flags 0000101e
+0154:trace:x11drv:set_mwm_hints 0x1006a setting mwm hints to 1a,24 (style 84c820c4 exstyle 10101)
+0154:trace:x11drv:window_set_config window 0x1006a/2800001, requesting config (3,61)-(413,507) mask 0xc above 0, serial 133
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20050, swp_flags 0x81d, shaped 0, rects { window (167,416)-(242,439), client (167,416)-(242,439), visible (167,416)-(242,439) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x20050/0 new_rects { window (167,416)-(242,439), client (167,416)-(242,439), visible (167,416)-(242,439) } style 50030001 flags 0000081d
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x2004e, swp_flags 0x81d, shaped 0, rects { window (248,416)-(323,439), client (248,416)-(323,439), visible (248,416)-(323,439) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x2004e/0 new_rects { window (248,416)-(323,439), client (248,416)-(323,439), visible (248,416)-(323,439) } style 50010000 flags 0000081d
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20052, swp_flags 0x81d, shaped 0, rects { window (329,416)-(404,439), client (329,416)-(404,439), visible (329,416)-(404,439) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x20052/0 new_rects { window (329,416)-(404,439), client (329,416)-(404,439), visible (329,416)-(404,439) } style 58010000 flags 0000081d
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10070, swp_flags 0x81d, shaped 0, rects { window (410,416)-(485,439), client (410,416)-(485,439), visible (410,416)-(485,439) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10070/0 new_rects { window (410,416)-(485,439), client (410,416)-(485,439), visible (410,416)-(485,439) } style 50030000 flags 0000081d
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (-3,-29)-(413,449)
+0050:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x3010048 drawable 350 dc_rect (0,0)-(1920,1080)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x2007a, swp_flags 0x14, shaped 0, rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) }
+0154:trace:x11drv:set_mwm_hints 0x2007a setting mwm hints to 0,24 (style 84000000 exstyle 80)
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20080, swp_flags 0x14, shaped 0, rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) }
+0154:trace:x11drv:X11DRV_create_win_data win 0x2007a/2800003 window (0,0)-(1,1) whole (0,0)-(1,1) client (0,0)-(1,1)
+0050:trace:x11drv:set_mwm_hints 0x20080 setting mwm hints to 0,24 (style 84000000 exstyle 80)
+0050:trace:x11drv:X11DRV_create_win_data win 0x20080/2000008 window (0,0)-(1,1) whole (0,0)-(1,1) client (0,0)-(1,1)
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x2007a/2800003 new_rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) } style 84000000 flags 0000003c
+0154:trace:x11drv:set_mwm_hints 0x2007a setting mwm hints to 0,24 (style 84000000 exstyle 80)
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x20080/2000008 new_rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) } style 84000000 flags 0000003c
+0050:trace:x11drv:set_mwm_hints 0x20080 setting mwm hints to 0,24 (style 84000000 exstyle 80)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x2007a, swp_flags 0x10, shaped 0, rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) }
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20080, swp_flags 0x10, shaped 0, rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) }
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x20080/2000008 new_rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) } style 84000000 flags 00000018
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x2007a/2800003 new_rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) } style 84000000 flags 00000018
+0050:trace:x11drv:set_mwm_hints 0x20080 setting mwm hints to 0,24 (style 84000000 exstyle 80)
+0050:trace:x11drv:window_set_config window 0x20080/2000008, requesting config (0,0)-(1,1) mask 0x40 above 1, serial 272
+0154:trace:x11drv:set_mwm_hints 0x2007a setting mwm hints to 0,24 (style 84000000 exstyle 80)
+0154:trace:x11drv:window_set_config window 0x2007a/2800003, requesting config (0,0)-(1,1) mask 0x40 above 1, serial 159
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x2007a, swp_flags 0x181b, shaped 0, rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) }
+0050:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x20080, swp_flags 0x181b, shaped 0, rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x2007a/2800003 new_rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) } style 84000000 flags 0000181b
+0050:trace:x11drv:X11DRV_WindowPosChanged win 0x20080/2000008 new_rects { window (0,0)-(1,1), client (0,0)-(1,1), visible (0,0)-(1,1) } style 84000000 flags 0000181b
+0154:trace:x11drv:set_mwm_hints 0x2007a setting mwm hints to 0,24 (style 84000000 exstyle 80)
+0154:trace:x11drv:window_set_config window 0x2007a/2800003, requesting config (0,0)-(1,1) mask 0x40 above 1, serial 163
+0050:trace:x11drv:set_mwm_hints 0x20080 setting mwm hints to 0,24 (style 84000000 exstyle 80)
+0050:trace:x11drv:window_set_config window 0x20080/2000008, requesting config (0,0)-(1,1) mask 0x40 above 1, serial 276
+0154:trace:x11drv:set_net_active_window requesting _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 165
+0050:trace:x11drv:handle_state_change window 0x20080/2000008 config (0,0)-(1,1)/276, expected (0,0)-(1,1)/276
+0154:trace:x11drv:set_mwm_hints 0x1006a setting mwm hints to 1a,24 (style 84c820c4 exstyle 10101)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x1c010042 drawable 350 dc_rect (0,0)-(1920,1080)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10086, swp_flags 0x14, shaped 0, rects { window (0,0)-(390,358), client (0,0)-(390,358), visible (0,0)-(390,358) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10086/0 new_rects { window (0,0)-(390,358), client (0,0)-(390,358), visible (0,0)-(390,358) } style 40010444 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10086, swp_flags 0x10, shaped 0, rects { window (0,0)-(390,358), client (0,0)-(390,358), visible (0,0)-(390,358) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10086/0 new_rects { window (0,0)-(390,358), client (0,0)-(390,358), visible (0,0)-(390,358) } style 40010444 flags 00000010
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10088, swp_flags 0x14, shaped 0, rects { window (12,7)-(378,348), client (12,7)-(378,348), visible (12,7)-(378,348) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10088/0 new_rects { window (12,7)-(378,348), client (12,7)-(378,348), visible (12,7)-(378,348) } style 40000007 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10088, swp_flags 0x10, shaped 0, rects { window (12,7)-(378,348), client (12,7)-(378,348), visible (12,7)-(378,348) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10088/0 new_rects { window (12,7)-(378,348), client (12,7)-(378,348), visible (12,7)-(378,348) } style 40000007 flags 00000010
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10088, swp_flags 0x181f, shaped 0, rects { window (12,7)-(378,348), client (12,7)-(378,348), visible (12,7)-(378,348) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10088/0 new_rects { window (12,7)-(378,348), client (12,7)-(378,348), visible (12,7)-(378,348) } style 50000007 flags 0000181f
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1008a, swp_flags 0x14, shaped 0, rects { window (23,24)-(364,97), client (23,24)-(364,97), visible (23,24)-(364,97) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x1008a/0 new_rects { window (23,24)-(364,97), client (23,24)-(364,97), visible (23,24)-(364,97) } style 40020000 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1008a, swp_flags 0x10, shaped 0, rects { window (23,24)-(364,97), client (23,24)-(364,97), visible (23,24)-(364,97) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x1008a/0 new_rects { window (23,24)-(364,97), client (23,24)-(364,97), visible (23,24)-(364,97) } style 40020000 flags 00000010
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1008a, swp_flags 0x181f, shaped 0, rects { window (23,24)-(364,97), client (23,24)-(364,97), visible (23,24)-(364,97) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x1008a/0 new_rects { window (23,24)-(364,97), client (23,24)-(364,97), visible (23,24)-(364,97) } style 50020000 flags 0000181f
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1008c, swp_flags 0x14, shaped 0, rects { window (23,98)-(368,277), client (23,98)-(368,277), visible (23,98)-(368,277) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x1008c/0 new_rects { window (23,98)-(368,277), client (23,98)-(368,277), visible (23,98)-(368,277) } style 4001000f flags 00000014
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x901006a drawable 2800001 dc_rect (23,98)-(368,277)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1008c, swp_flags 0x10, shaped 0, rects { window (23,98)-(368,277), client (25,100)-(366,275), visible (23,98)-(368,277) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x1008c/0 new_rects { window (23,98)-(368,277), client (25,100)-(366,275), visible (23,98)-(368,277) } style 4001000f flags 00000010
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1008c, swp_flags 0x181f, shaped 0, rects { window (23,98)-(368,277), client (25,100)-(366,275), visible (23,98)-(368,277) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x1008c/0 new_rects { window (23,98)-(368,277), client (25,100)-(366,275), visible (23,98)-(368,277) } style 5001000f flags 0000181f
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x901006a drawable 2800001 dc_rect (25,100)-(366,275)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10090, swp_flags 0x14, shaped 0, rects { window (23,283)-(191,306), client (23,283)-(191,306), visible (23,283)-(191,306) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10090/0 new_rects { window (23,283)-(191,306), client (23,283)-(191,306), visible (23,283)-(191,306) } style 40010000 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10090, swp_flags 0x10, shaped 0, rects { window (23,283)-(191,306), client (23,283)-(191,306), visible (23,283)-(191,306) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10090/0 new_rects { window (23,283)-(191,306), client (23,283)-(191,306), visible (23,283)-(191,306) } style 40010000 flags 00000010
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10090, swp_flags 0x181f, shaped 0, rects { window (23,283)-(191,306), client (23,283)-(191,306), visible (23,283)-(191,306) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10090/0 new_rects { window (23,283)-(191,306), client (23,283)-(191,306), visible (23,283)-(191,306) } style 50010000 flags 0000181f
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10092, swp_flags 0x14, shaped 0, rects { window (200,283)-(368,306), client (200,283)-(368,306), visible (200,283)-(368,306) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10092/0 new_rects { window (200,283)-(368,306), client (200,283)-(368,306), visible (200,283)-(368,306) } style 40010000 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10092, swp_flags 0x10, shaped 0, rects { window (200,283)-(368,306), client (200,283)-(368,306), visible (200,283)-(368,306) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10092/0 new_rects { window (200,283)-(368,306), client (200,283)-(368,306), visible (200,283)-(368,306) } style 40010000 flags 00000010
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10092, swp_flags 0x181f, shaped 0, rects { window (200,283)-(368,306), client (200,283)-(368,306), visible (200,283)-(368,306) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10092/0 new_rects { window (200,283)-(368,306), client (200,283)-(368,306), visible (200,283)-(368,306) } style 50010000 flags 0000181f
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10094, swp_flags 0x14, shaped 0, rects { window (26,319)-(146,332), client (26,319)-(146,332), visible (26,319)-(146,332) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10094/0 new_rects { window (26,319)-(146,332), client (26,319)-(146,332), visible (26,319)-(146,332) } style 40020000 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10094, swp_flags 0x10, shaped 0, rects { window (26,319)-(146,332), client (26,319)-(146,332), visible (26,319)-(146,332) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10094/0 new_rects { window (26,319)-(146,332), client (26,319)-(146,332), visible (26,319)-(146,332) } style 40020000 flags 00000010
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10094, swp_flags 0x181f, shaped 0, rects { window (26,319)-(146,332), client (26,319)-(146,332), visible (26,319)-(146,332) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10094/0 new_rects { window (26,319)-(146,332), client (26,319)-(146,332), visible (26,319)-(146,332) } style 50020000 flags 0000181f
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10096, swp_flags 0x14, shaped 0, rects { window (150,315)-(368,406), client (150,315)-(368,406), visible (150,315)-(368,406) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10096/0 new_rects { window (150,315)-(368,406), client (150,315)-(368,406), visible (150,315)-(368,406) } style 40210003 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10096, swp_flags 0x181f, shaped 0, rects { window (150,315)-(368,406), client (150,315)-(368,406), visible (150,315)-(368,406) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10096/0 new_rects { window (150,315)-(368,406), client (150,315)-(368,406), visible (150,315)-(368,406) } style 50010003 flags 0000181f
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10096, swp_flags 0x10, shaped 0, rects { window (150,315)-(368,406), client (150,315)-(368,406), visible (150,315)-(368,406) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10096/0 new_rects { window (150,315)-(368,406), client (150,315)-(368,406), visible (150,315)-(368,406) } style 50010003 flags 00000010
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x17010072 drawable 2800001 dc_rect (150,315)-(368,406)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x14, shaped 0, rects { window (153,400)-(371,467), client (153,400)-(371,467), visible (153,400)-(371,467) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/0 new_rects { window (153,400)-(371,467), client (153,400)-(371,467), visible (153,400)-(371,467) } style 44a08041 flags 00000014
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x10, shaped 0, rects { window (153,400)-(371,467), client (154,401)-(353,466), visible (153,400)-(371,467) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/0 new_rects { window (153,400)-(371,467), client (154,401)-(353,466), visible (153,400)-(371,467) } style 44a08041 flags 00000010
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800001 dc_rect (304,716)-(503,781)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x103f, shaped 0, rects { window (153,400)-(371,467), client (154,401)-(370,466), visible (153,400)-(371,467) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/0 new_rects { window (153,400)-(371,467), client (154,401)-(370,466), visible (153,400)-(371,467) } style 44808041 flags 0000103f
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x101e, shaped 0, rects { window (153,400)-(371,466), client (154,401)-(370,465), visible (153,400)-(371,466) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/0 new_rects { window (153,400)-(371,466), client (154,401)-(370,465), visible (153,400)-(371,466) } style 44808041 flags 0000101e
+0154:trace:x11drv:set_mwm_hints 0x10098 setting mwm hints to 0,24 (style 44808041 exstyle 80)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x80d, shaped 0, rects { window (153,400)-(371,466), client (154,401)-(370,465), visible (153,400)-(371,466) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/2800004 new_rects { window (153,400)-(371,466), client (154,401)-(370,465), visible (153,400)-(371,466) } style 44808041 flags 0000082d
+0154:trace:x11drv:set_mwm_hints 0x10098 setting mwm hints to 0,24 (style 44808041 exstyle 80)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10096, swp_flags 0x101e, shaped 0, rects { window (150,315)-(368,339), client (150,315)-(368,339), visible (150,315)-(368,339) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10096/0 new_rects { window (150,315)-(368,339), client (150,315)-(368,339), visible (150,315)-(368,339) } style 50010003 flags 0000101e
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x101e, shaped 0, rects { window (153,400)-(371,467), client (154,401)-(370,466), visible (153,400)-(371,467) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/2800004 new_rects { window (153,400)-(371,467), client (154,401)-(370,466), visible (153,400)-(371,467) } style 44808041 flags 0000101e
+0154:trace:x11drv:set_mwm_hints 0x10098 setting mwm hints to 0,24 (style 44808041 exstyle 80)
+0154:trace:x11drv:window_set_config window 0x10098/2800004, requesting config (153,400)-(371,467) mask 0xc above 0, serial 195
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x101e, shaped 0, rects { window (153,400)-(371,466), client (154,401)-(370,465), visible (153,400)-(371,466) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/2800004 new_rects { window (153,400)-(371,466), client (154,401)-(370,465), visible (153,400)-(371,466) } style 44808041 flags 0000101e
+0154:trace:x11drv:set_mwm_hints 0x10098 setting mwm hints to 0,24 (style 44808041 exstyle 80)
+0154:trace:x11drv:window_set_config window 0x10098/2800004, requesting config (153,400)-(371,466) mask 0xc above 0, serial 198
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x17010072 drawable 2800001 dc_rect (150,315)-(368,339)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x101e, shaped 0, rects { window (153,400)-(371,467), client (154,401)-(370,466), visible (153,400)-(371,467) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/2800004 new_rects { window (153,400)-(371,467), client (154,401)-(370,466), visible (153,400)-(371,467) } style 44808041 flags 0000101e
+0154:trace:x11drv:set_mwm_hints 0x10098 setting mwm hints to 0,24 (style 44808041 exstyle 80)
+0154:trace:x11drv:window_set_config window 0x10098/2800004, requesting config (153,400)-(371,467) mask 0xc above 0, serial 201
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x101e, shaped 0, rects { window (153,400)-(371,466), client (154,401)-(370,465), visible (153,400)-(371,466) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/2800004 new_rects { window (153,400)-(371,466), client (154,401)-(370,465), visible (153,400)-(371,466) } style 44808041 flags 0000101e
+0154:trace:x11drv:set_mwm_hints 0x10098 setting mwm hints to 0,24 (style 44808041 exstyle 80)
+0154:trace:x11drv:window_set_config window 0x10098/2800004, requesting config (153,400)-(371,466) mask 0xc above 0, serial 204
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800004 dc_rect (1,1)-(217,65)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10096, swp_flags 0x101e, shaped 0, rects { window (150,315)-(368,336), client (150,315)-(368,336), visible (150,315)-(368,336) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10096/0 new_rects { window (150,315)-(368,336), client (150,315)-(368,336), visible (150,315)-(368,336) } style 50010003 flags 0000101e
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x101e, shaped 0, rects { window (153,400)-(371,467), client (154,401)-(370,466), visible (153,400)-(371,467) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/2800004 new_rects { window (153,400)-(371,467), client (154,401)-(370,466), visible (153,400)-(371,467) } style 44808041 flags 0000101e
+0154:trace:x11drv:set_mwm_hints 0x10098 setting mwm hints to 0,24 (style 44808041 exstyle 80)
+0154:trace:x11drv:window_set_config window 0x10098/2800004, requesting config (153,400)-(371,467) mask 0xc above 0, serial 207
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x103f, shaped 0, rects { window (153,400)-(371,467), client (154,401)-(353,466), visible (153,400)-(371,467) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/2800004 new_rects { window (153,400)-(371,467), client (154,401)-(353,466), visible (153,400)-(371,467) } style 44a08041 flags 0000103f
+0154:trace:x11drv:set_mwm_hints 0x10098 setting mwm hints to 0,24 (style 44a08041 exstyle 80)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x17010072 drawable 2800004 dc_rect (0,0)-(218,67)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10086, swp_flags 0x809, shaped 0, rects { window (10,47)-(400,405), client (10,47)-(400,405), visible (10,47)-(400,405) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10086/0 new_rects { window (10,47)-(400,405), client (10,47)-(400,405), visible (10,47)-(400,405) } style 40010444 flags 00000809
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10086, swp_flags 0x181f, shaped 0, rects { window (10,47)-(400,405), client (10,47)-(400,405), visible (10,47)-(400,405) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10086/0 new_rects { window (10,47)-(400,405), client (10,47)-(400,405), visible (10,47)-(400,405) } style 50010444 flags 0000181f
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x901006a drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1006a, swp_flags 0x1843, shaped 0, rects { window (0,32)-(416,510), client (3,61)-(413,507), visible (0,32)-(416,510) }
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (-3,-29)-(413,449)
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x1006a/2800001 new_rects { window (0,32)-(416,510), client (3,61)-(413,507), visible (3,61)-(413,507) } style 94c820c4 flags 00001963
+0154:trace:x11drv:set_mwm_hints 0x1006a setting mwm hints to 1a,24 (style 94c820c4 exstyle 10101)
+0154:trace:x11drv:window_set_config window 0x1006a/2800001, requesting config (3,61)-(413,507) mask 0x40 above 1, serial 218
+0154:trace:x11drv:map_window win 0x1006a/2800001
+0154:trace:x11drv:set_mwm_hints 0x1006a setting mwm hints to 1a,24 (style 94c820c4 exstyle 10101)
+0154:trace:x11drv:window_set_wm_state window 0x1006a/2800001, requesting WM_STATE 0 -> 0x1 serial 227, foreground 0x1006a, activate 1
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (-3,-29)-(413,449)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x901006a drawable 2800001 dc_rect (0,0)-(410,446)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x901006a drawable 2800001 dc_rect (0,0)-(410,446)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800001 dc_rect (10,47)-(400,405)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0xd010079 drawable 2800001 dc_rect (10,47)-(400,405)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x1c010042 drawable 350 dc_rect (0,0)-(1920,1080)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x1010081 drawable 2800001 dc_rect (22,54)-(388,395)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x16010054 drawable 2800001 dc_rect (22,54)-(388,395)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x3010084 drawable 2800001 dc_rect (33,71)-(374,144)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x15010065 drawable 2800001 dc_rect (33,71)-(374,144)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x3010085 drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x101008c drawable 2800001 dc_rect (33,145)-(378,324)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x101008c drawable 2800001 dc_rect (33,145)-(378,324)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x3010085 drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x701008a drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x1010090 drawable 2800001 dc_rect (33,330)-(201,353)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x401008b drawable 2800001 dc_rect (33,330)-(201,353)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x1010095 drawable 2800001 dc_rect (210,330)-(378,353)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x601008d drawable 2800001 dc_rect (210,330)-(378,353)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x1010099 drawable 2800001 dc_rect (36,366)-(156,379)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x7010093 drawable 2800001 dc_rect (36,366)-(156,379)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x301009c drawable 2800001 dc_rect (160,362)-(378,383)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x6010098 drawable 2800001 dc_rect (160,362)-(378,383)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x10100a4 drawable 2800001 dc_rect (167,416)-(242,439)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x501009d drawable 2800001 dc_rect (167,416)-(242,439)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x10100a8 drawable 2800001 dc_rect (248,416)-(323,439)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x40100a3 drawable 2800001 dc_rect (248,416)-(323,439)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x10100ac drawable 2800001 dc_rect (329,416)-(404,439)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x60100a7 drawable 2800001 dc_rect (329,416)-(404,439)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x10100b0 drawable 2800001 dc_rect (6,7)-(404,409)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x60100ab drawable 2800001 dc_rect (6,7)-(404,409)
+0154:warn:x11drv:handle_state_change Ignoring window 0x1006a/2800001 old config (3,61)-(413,507)/133, expected (3,61)-(413,507)/218
+0154:warn:x11drv:handle_state_change Ignoring window 0x2007a/2800003 old config (0,0)-(1,1)/159, expected (0,0)-(1,1)/163
+0154:trace:x11drv:handle_state_change window 0x1006a/2800001 WM_STATE 0x1/227, expected 0x1/227
+0154:warn:x11drv:handle_state_change Ignoring window 0x1006a/2800001 no-op _NET_WM_STATE 0/227
+0154:trace:x11drv:handle_state_change window 0x10098/2800004 config (153,400)-(371,467)/207, expected (153,400)-(371,467)/207
+0154:warn:x11drv:handle_state_change Ignoring window 0x1006a/2800001 no-op WM_STATE 0x1/227
+0154:warn:x11drv:handle_state_change Ignoring window 0x1006a/2800001 no-op _NET_WM_STATE 0/227
+0154:trace:x11drv:handle_state_change window 0x1006a/2800001 config (3,61)-(413,507)/227, expected (3,61)-(413,507)/218
+0154:trace:x11drv:set_window_parent window 0x1006a/2800001, parent 80071b
+0154:trace:x11drv:host_window_set_parent host window 0x5555639fe390/80071b, parent 350
+0154:trace:x11drv:host_window_reparent parent 350, window 80071b, rect (0,0)-(0,0), old (nil)/0 -> new (nil)/0
+0154:trace:x11drv:get_host_window created host window 0x5555639fe390/80071b, parent 350 rect (-58,-23)-(474,582)
+0154:trace:x11drv:host_window_add_ref host window 0x5555639fe390/80071b increasing refcount to 1
+0154:trace:x11drv:host_window_reparent parent 80071b, window 2800001, rect (0,0)-(0,0), old (nil)/0 -> new 0x5555639fe390/80071b
+0154:trace:x11drv:host_window_configure_child host win 0x5555639fe390/80071b, window 2800001, rect (0,0)-(410,446), root_coords 0
+0154:trace:x11drv:host_window_configure_child host win 0x5555639fe390/80071b, window 2800001, rect (61,92)-(471,538), root_coords 0
+0154:warn:x11drv:handle_state_change window 0x1006a/2800001 unexpected config (3,69)-(413,515)/227
+0154:warn:x11drv:handle_state_change Ignoring window 0x1006a/2800001 no-op WM_STATE 0x1/227
+0154:warn:x11drv:handle_state_change Ignoring window 0x1006a/2800001 no-op _NET_WM_STATE 0/227
+0154:trace:x11drv:window_update_client_config window 0x1006a/2800001 config changed (0,32)-(416,510) -> (0,40)-(416,518), flags 0x15
+0154:trace:x11drv:X11DRV_GetWindowStateUpdates hwnd 0x1006a, returning state_cmd 0, config_cmd 0x15f010, rect (0,40)-(416,518), foreground (nil)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1006a, swp_flags 0x815, shaped 0, rects { window (0,40)-(416,518), client (3,69)-(413,515), visible (0,40)-(416,518) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x1006a/2800001 new_rects { window (0,40)-(416,518), client (3,69)-(413,515), visible (3,69)-(413,515) } style 94c820c4 flags 00000815
+0154:trace:x11drv:set_mwm_hints 0x1006a setting mwm hints to 1a,24 (style 94c820c4 exstyle 10101)
+0154:trace:x11drv:handle_state_change _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 238 time 43533188, expected 0x1006a/2800001 serial 165
+0050:warn:x11drv:handle_state_change mismatch _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 279 time 43533188, expected 0x10020/350 serial 63
+00a4:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 71 time 43533188
+0154:warn:x11drv:handle_state_change Ignoring window 0x1006a/2800001 no-op _NET_WM_STATE 0/238
+0154:warn:x11drv:handle_state_change Ignoring window 0x1006a/2800001 no-op _NET_WM_STATE 0/246
+0154:trace:x11drv:window_set_user_time window 0x1006a/2800001, requesting _NET_WM_USER_TIME 43535527 serial 251
+0154:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW (nil)/0 serial 251 time 43535667
+0050:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW (nil)/0 serial 280 time 43535667
+00a4:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW (nil)/0 serial 72 time 43535667
+0154:warn:x11drv:handle_state_change Ignoring window 0x1006a/2800001 no-op _NET_WM_STATE 0/251
+0154:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 255 time 43536216
+0050:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 281 time 43536216
+00a4:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 73 time 43536216
+0154:warn:x11drv:handle_state_change Ignoring window 0x1006a/2800001 no-op _NET_WM_STATE 0/255
+0154:trace:x11drv:window_set_user_time window 0x1006a/2800001, requesting _NET_WM_USER_TIME 43536387 serial 258
+0050:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW 0x10020/600004 serial 282 time 43537094
+00a4:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW 0x10020/600004 serial 74 time 43537094
+0154:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW 0x10020/600004 serial 258 time 43537094
+0154:warn:x11drv:handle_state_change Ignoring window 0x1006a/2800001 no-op _NET_WM_STATE 0/258
+0154:trace:x11drv:X11DRV_GetWindowStateUpdates hwnd 0x1006a, returning state_cmd 0, config_cmd 0, rect (0,40)-(416,518), foreground 0x10020
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (-3,-29)-(413,449)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x901006a drawable 2800001 dc_rect (35,147)-(376,322)
+0050:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x3010048 drawable 350 dc_rect (0,0)-(1920,1080)
+0050:trace:x11drv:set_net_active_window requesting _NET_ACTIVE_WINDOW 0x10020/350 serial 286
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x901006a drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:host_window_configure_child host win 0x5555639fe390/80071b, window 2800001, rect (61,92)-(477,570), root_coords 0
+0050:warn:x11drv:handle_state_change mismatch _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 286 time 43540060, expected 0x10020/350 serial 286
+00a4:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 75 time 43540060
+0154:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 264 time 43540060
+0050:trace:x11drv:X11DRV_GetWindowStateUpdates hwnd 0x10020, returning state_cmd 0, config_cmd 0, rect (12,65537)-(-21101912,32767), foreground 0x1006a
+0050:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x3010048 drawable 350 dc_rect (0,0)-(1920,1080)
+00a4:warn:x11drv:handle_state_change Ignoring no-op _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 75 time 43540060
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (-3,-29)-(413,449)
+0050:warn:x11drv:handle_state_change Ignoring no-op _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 286 time 43540060
+0154:warn:x11drv:handle_state_change Ignoring no-op _NET_ACTIVE_WINDOW 0x1006a/2800001 serial 264 time 43540060
+0154:warn:x11drv:handle_state_change Ignoring window 0x1006a/2800001 no-op _NET_WM_STATE 0/264
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x901006a drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:window_set_user_time window 0x1006a/2800001, requesting _NET_WM_USER_TIME 43541559 serial 332
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0xd010079 drawable 2800001 dc_rect (210,330)-(378,353)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x1010081 drawable 2800001 dc_rect (210,330)-(378,353)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x103f, shaped 0, rects { window (153,400)-(371,467), client (154,401)-(370,466), visible (153,400)-(371,467) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/2800004 new_rects { window (153,400)-(371,467), client (154,401)-(370,466), visible (153,400)-(371,467) } style 44808041 flags 0000103f
+0154:trace:x11drv:set_mwm_hints 0x10098 setting mwm hints to 0,24 (style 44808041 exstyle 80)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x10098, swp_flags 0x103f, shaped 0, rects { window (153,400)-(371,467), client (154,401)-(353,466), visible (153,400)-(371,467) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x10098/2800004 new_rects { window (153,400)-(371,467), client (154,401)-(353,466), visible (153,400)-(371,467) } style 44a08041 flags 0000103f
+0154:trace:x11drv:set_mwm_hints 0x10098 setting mwm hints to 0,24 (style 44a08041 exstyle 80)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x17010072 drawable 2800004 dc_rect (0,0)-(218,67)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x16010054 drawable 2800001 dc_rect (160,362)-(378,383)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (-3,-29)-(413,449)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (-3,-29)-(413,449)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x16010054 drawable 2800001 dc_rect (160,362)-(378,383)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:window_set_user_time window 0x1006a/2800001, requesting _NET_WM_USER_TIME 43541976 serial 356
+0154:trace:x11drv:window_set_user_time window 0x1006a/2800001, requesting _NET_WM_USER_TIME 43542379 serial 375
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x16010054 drawable 2800001 dc_rect (160,362)-(378,383)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (-3,-29)-(413,449)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (-3,-29)-(413,449)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:window_set_user_time window 0x1006a/2800001, requesting _NET_WM_USER_TIME 43542847 serial 389
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (-3,-29)-(413,449)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (-3,-29)-(413,449)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x1010081 drawable 2800001 dc_rect (210,330)-(378,353)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x3010084 drawable 2800001 dc_rect (167,416)-(242,439)
+0154:trace:x11drv:window_set_user_time window 0x1006a/2800001, requesting _NET_WM_USER_TIME 43544486 serial 498
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x4010076 drawable 2800001 dc_rect (35,147)-(376,322)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x3010084 drawable 2800001 dc_rect (167,416)-(242,439)
+0154:trace:x11drv:X11DRV_WindowPosChanging hwnd 0x1006a, swp_flags 0x1897, shaped 0, rects { window (0,40)-(416,518), client (3,69)-(413,515), visible (0,40)-(416,518) }
+0154:trace:x11drv:X11DRV_WindowPosChanged win 0x1006a/2800001 new_rects { window (0,40)-(416,518), client (3,69)-(413,515), visible (3,69)-(413,515) } style 84c820c4 flags 000018bf
+0154:trace:x11drv:window_set_wm_state window 0x1006a/2800001, requesting WM_STATE 0x1 -> 0 serial 501, foreground 0x1006a, activate 0
+0154:trace:x11drv:set_mwm_hints 0x1006a setting mwm hints to 1a,24 (style 84c820c4 exstyle 10101)
+0154:trace:x11drv:X11DRV_ExtEscape SET_DRAWABLE hdc 0x2e010052 drawable 2800001 dc_rect (-3,-29)-(413,449)
+00a4:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW 0x10020/600004 serial 77 time 43544582
+0050:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW 0x10020/600004 serial 292 time 43544582
+0154:trace:x11drv:destroy_whole_window win 0x10088 xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x1008a xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x1008c xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x10090 xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x10092 xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x10094 xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x10098 xwin 2800004/0
+0154:trace:x11drv:destroy_whole_window win 0x10096 xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x10086 xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x20050 xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x2004e xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x20052 xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x10070 xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x2007a xwin 2800003/0
+0154:trace:x11drv:destroy_whole_window win 0x20054 xwin 2800002/0
+0154:trace:x11drv:destroy_whole_window win 0x10072 xwin 0/0
+0154:trace:x11drv:destroy_whole_window win 0x1006a xwin 2800001/0
+0154:trace:x11drv:host_window_release host window 0x5555639fe390/80071b decreasing refcount to 0
+014c:fixme:ver:GetCurrentPackageId (00007FFFFE2FFEB0 0000000000000000): stub
+00a4:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW (nil)/0 serial 78 time 43545342
+0050:warn:x11drv:handle_state_change unexpected _NET_ACTIVE_WINDOW (nil)/0 serial 293 time 43545342
+0050:trace:x11drv:destroy_whole_window win 0x1004a xwin 2000007/0
+0050:trace:x11drv:destroy_whole_window win 0x10048 xwin 2000006/0
+0050:trace:x11drv:destroy_whole_window win 0x10046 xwin 2000005/0
+0050:trace:x11drv:destroy_whole_window win 0x10044 xwin 2000004/0
+003c:fixme:ver:GetCurrentPackageId (00007FFFFE2FFEB0 0000000000000000): stub
